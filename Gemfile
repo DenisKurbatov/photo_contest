@@ -4,6 +4,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.4.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem 'devise'
+gem 'omniauth-vkontakte'
 gem 'rails', '~> 5.2.0'
 gem 'bootstrap-sass'
 # Use sqlite3 as the database for Active Record
