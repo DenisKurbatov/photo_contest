@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   
-
-  devise_for :users, controllers: { omniauth_callback: "sessions" }
+  devise_for :users, controllers: { omniauth_callbacks: 'sessions' }
   root 'static_pages#home'
   get '/home', to: 'static_pages#home'
   devise_scope :user do
