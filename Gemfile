@@ -8,6 +8,8 @@ gem 'devise'
 gem 'omniauth-vkontakte'
 gem 'rails', '~> 5.2.0'
 gem 'bootstrap-sass'
+gem 'carrierwave'
+gem "mini_magick"
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # Use Puma as the app server

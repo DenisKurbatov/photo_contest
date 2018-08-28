@@ -6,4 +6,8 @@ Rails.application.routes.draw do
   devise_scope :user do
     delete 'logout', to: 'sessions#destroy'
   end
+  resources :photos do
+    resources :likes, only: [:create, :destroy]
+  end
+  
 end

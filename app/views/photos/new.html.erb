@@ -1,0 +1,12 @@
+<h1> Форма для закгрузки фотграфии </h1>
+<%= form_for(@photo) do |f| %>
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>  
+  </div>
+  <div>
+    <%= f.label :image %>
+    <%= f.file_field :image %>  
+  </div>
+    <%= f.submit "Добавить" %>
+<% end %>

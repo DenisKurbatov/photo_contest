@@ -1,0 +1,10 @@
+<h1> <%= @photo.name %> </h1>
+<%= image_tag(@photo.image.url, alt:"Photo") %>
+<% like=Like.find_by(photo: @photo, user: current_user) %>
+<% if like %>
+<%=   link_to("Remove Like", photo_like_path(photo_id: @photo, id: like.id), method: :delete )%>
+<% else %>
+<%=   link_to("Add Like", photo_likes_path(photo_id: @photo), method: :post)%>
+<% end %>
+<p> Количество голосов за фото:</p>
+<%= @photo.likes_count%>
