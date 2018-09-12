@@ -18,6 +18,11 @@ class PhotoUploader < CarrierWave::Uploader::Base
     process resize_to_fill: [250, 250]
   end
 
+  version :full do
+    process resize_to_fill: [960, 620]
+  end
+  
+
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url(*args)
   #   # For Rails 3.1+ asset pipeline compatibility:

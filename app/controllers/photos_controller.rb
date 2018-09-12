@@ -16,6 +16,10 @@ class PhotosController < ApplicationController
   def index
     @photos = Photo.order("created_at")
   end
+  
+  def index_my_photos
+    @photos = Photo.from_user(current_user)
+  end
 
   def show 
     @photo = Photo.find(params[:id])

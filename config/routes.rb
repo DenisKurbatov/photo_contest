@@ -9,5 +9,6 @@ Rails.application.routes.draw do
   resources :photos do
     resources :likes, only: [:create, :destroy]
   end
+  get "/:id/photos", to: "photos#index_my_photos", as: "user_photo"
   
 end

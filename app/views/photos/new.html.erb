@@ -1,12 +1,18 @@
-<h1> Форма для закгрузки фотграфии </h1>
-<%= form_for(@photo) do |f| %>
-  <div>
-    <%= f.label :name %>
-    <%= f.text_field :name %>  
+<% provide(:title, "Загрузка") %>
+<h1> Загрузка фотографий </h1>
+<div class="row">
+  <div class="col-md-6 col-md-offset-4">
+    <%= form_for(@photo) do |f| %>
+    
+      <%= f.label "Название фото" %>
+      <%= f.text_field :name, class: "form-control" %>  
+    
+      
+      <%= f.label "Фото"%>
+      <%= f.file_field :image %>  
+    
+      <%= f.submit "Добавить" , class: "btn btn-primary" %>
+    <% end %>
   </div>
-  <div>
-    <%= f.label :image %>
-    <%= f.file_field :image %>  
-  </div>
-    <%= f.submit "Добавить" %>
-<% end %>
+</div>
+

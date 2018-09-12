@@ -1,10 +1,23 @@
 <h1> <%= @photo.name %> </h1>
-<%= image_tag(@photo.image.url, alt:"Photo") %>
-<% like=Like.find_by(photo: @photo, user: current_user) %>
-<% if like %>
-<%=   link_to("Remove Like", photo_like_path(photo_id: @photo, id: like.id), method: :delete )%>
-<% else %>
-<%=   link_to("Add Like", photo_likes_path(photo_id: @photo), method: :post)%>
-<% end %>
-<p> Количество голосов за фото:</p>
-<%= @photo.likes_count%>
+<div class="row col-md-offset-1">
+  <%= image_tag(@photo.image.full.url, alt:"Photo", class: "col-md-12 col-sm-12 col-xs-12") %>
+  <div class="col-md-2 col-sm-2 col-xs-2 btn btn-link">    
+    <div class="col-md-1 col-sm-1 col-xs-1">
+      <% like=Like.find_by(photo: @photo, user: current_user) %>
+      <% if like %>      
+        <%=link_to(raw('<span class="active glyphicon glyphicon-heart"></span>'), photo_like_path(photo_id: @photo, id: like.id), method: :delete )%>
+      <% else %>
+        <%=link_to(raw('<span class="glyphicon glyphicon-heart"></span>'), photo_likes_path(photo_id: @photo), method: :post)%>
+      <% end %>      
+    </div>
+    <div class="count col-md-1 col-sm-1 col-xs-1">
+      <%= @photo.likes_count%>
+    </div>
+  </div>  
+  <div class="comment col-md-1 col-sm-1 col-xs-1 btn btn-link ">
+    <span class="glyphicon glyphicon-comment"></span>
+  </div>
+</div>
+
+
+
