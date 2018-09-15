@@ -4,6 +4,10 @@ class Photo < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
 
+
+  validates :name, presence: true
+  validates :image, presence: true
+
   scope :from_user, ->(user_id) { where(user_id: user_id) }
   paginates_per 12
 

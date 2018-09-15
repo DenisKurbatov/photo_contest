@@ -4,12 +4,11 @@
     <title>Photo Contest | <%= yield(:title) %></title>
     <%= render 'layouts/rails_default' %>
   </head>
-
   <body>
-  <%= render "layouts/header"%>
+    <%=render "layouts/header"%>
     <div class="container">
-      <%= render "shared/flashes"%>
-      <%= yield %>
+      <%=render "shared/flashes"%>
+      <%=yield%>
     </div>
   </body>
 </html>

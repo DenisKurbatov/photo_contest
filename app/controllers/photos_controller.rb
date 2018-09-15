@@ -7,8 +7,10 @@ class PhotosController < ApplicationController
   def create 
     @photo = current_user.photos.new(photo_params) 
     if @photo.save
+      flash[:success] = "Фотография добавлена"
       redirect_to root_path
     else
+      flash[:danger] = "Ошибка загрузки"
       redirect_to new_photo_path
     end
   end
@@ -27,6 +29,7 @@ class PhotosController < ApplicationController
   def destroy
     @photo = Photo.find(params[:id])
     @photo.destroy
+    flash[:success] = "Фотография успешно удалена"
     redirect_to user_photo_path(current_user)
   end
 

@@ -1,28 +1,25 @@
-
 <div class="row">
-    <div class="col-md-12">
-        <% if @comment_parent%>
-            <div class="col-md-6">
-                <% user=User.find(@comment_parent.user_id)%>
-                <%= user.name %> :
-            </div>
-             <div class="date col-md-6">
-                <%= @comment_parent.created_at%>
-            </div>
-            <div class="content col-md-12"><%= @comment_parent.body %></div>
-        <% else %>
-            <% @photo = Photo.find(params[:photo_id])%>
-            <%= image_tag(@photo.image.full.url, alt:"Photo", class: "col-md-12") %>
-        <% end %>
-    </div>
+  <div class="col-md-12">
+    <% if @comment_parent%>
+      <div class="col-md-6">
+        <% user=User.find(@comment_parent.user_id)%>
+        <%= user.name %> :
+      </div>
+      <div class="date col-md-6">
+        <%= @comment_parent.created_at%>
+      </div>
+      <div class="content col-md-12"><%= @comment_parent.body %></div>
+    <% else %>
+      <% @photo = Photo.find(params[:photo_id])%>
+      <%= image_tag(@photo.image.full.url, alt:"Photo", class: "col-md-12") %>
+    <% end %>
+  </div>
 </div>
 <div class="row col-offset-1">
-    
-        <%= form_for(@comment, url: user_photo_comment_comments_path, method: :post ) do |f| %>
-            <%=   f.text_area :body, class: "col-md-9" %>
-            <%=   f.submit "Отправить", class: " col-md-1 btn btn-primary" %>
-        <%  end %>
-    
+  <%=form_for(@comment, url: user_photo_comment_comments_path, method: :post ) do |f| %>
+    <%=f.text_area :body, class: "col-md-9" %>
+    <%=f.submit "Отправить", class: " col-md-1 btn btn-primary" %>
+  <%end %>
 </div>
 
  
