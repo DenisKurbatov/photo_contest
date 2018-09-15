@@ -5,7 +5,7 @@ class PhotosController < ApplicationController
   end
 
   def create 
-    @photo = current_user.photos.build(photo_params)
+    @photo = current_user.photos.new(photo_params) 
     if @photo.save
       redirect_to root_path
     else
@@ -14,15 +14,20 @@ class PhotosController < ApplicationController
   end
 
   def index
-    @photos = Photo.order("created_at")
+    @photos = Photo.order("created_at").page params[:page]
   end
   
   def index_my_photos
-    @photos = Photo.from_user(current_user)
+    @photos = Photo.from_user(current_user).page params[:page]
   end
 
   def show 
     @photo = Photo.find(params[:id])
+  end
+  def destroy
+    @photo = Photo.find(params[:id])
+    @photo.destroy
+    redirect_to user_photo_path(current_user)
   end
 
   private

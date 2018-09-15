@@ -5,10 +5,12 @@ ruby '2.4.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'devise'
+
 gem 'omniauth-vkontakte'
 gem 'rails', '~> 5.2.0'
 gem 'bootstrap-sass'
 gem 'bootstrap-glyphicons'
+gem 'kaminari'
 
 gem 'carrierwave'
 gem "mini_magick"

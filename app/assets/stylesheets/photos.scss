@@ -5,44 +5,4 @@
 @import "bootstrap-sprockets";
 @import 'bootstrap/glyphicons';
 
-h1{
-  text-align: center;
-}
 
-.img-rounded {
-  border: 1px solid black;
-  width: 100%;
-  margin-left: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.row {
-  magrin-left: auto;
-  margin-right: auto;
-  padding-top: 10px;
- 
-}
-.form-control {
-  margin-bottom: 10px;
-}
-.btn { 
-  padding-left: 0px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.btn-primary{
-  padding: 5px 10px 5px 10px;
-}
-.active{
-  color: red;
-}
-.count{
-  padding-left: 0px;
-}
-.comment{
-  padding-right: 3px;
-  text-align: right;
-  float: right;
-  margin-right: 10px;
-  
-}

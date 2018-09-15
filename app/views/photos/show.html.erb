@@ -1,23 +1,42 @@
-<h1> <%= @photo.name %> </h1>
-<div class="row col-md-offset-1">
-  <%= image_tag(@photo.image.full.url, alt:"Photo", class: "col-md-12 col-sm-12 col-xs-12") %>
-  <div class="col-md-2 col-sm-2 col-xs-2 btn btn-link">    
-    <div class="col-md-1 col-sm-1 col-xs-1">
+
+<div class="row">
+<div class="col-md-10">
+  <h1> <%= @photo.name %> </h1>
+</div>
+ <div class="col-md-2">
+  <%= link_to(raw("<button class='glyphicon glyphicon-remove'></button>"), @photo, method: :delete)%>
+</div>
+  
+  <%= image_tag(@photo.image.full.url, alt:"Photo", class: "col-md-12") %>
+</div>
+
+<div class="row">
+  <div class = "col-md-1">
       <% like=Like.find_by(photo: @photo, user: current_user) %>
       <% if like %>      
         <%=link_to(raw('<span class="active glyphicon glyphicon-heart"></span>'), photo_like_path(photo_id: @photo, id: like.id), method: :delete )%>
       <% else %>
         <%=link_to(raw('<span class="glyphicon glyphicon-heart"></span>'), photo_likes_path(photo_id: @photo), method: :post)%>
-      <% end %>      
-    </div>
-    <div class="count col-md-1 col-sm-1 col-xs-1">
+      <% end %>
       <%= @photo.likes_count%>
-    </div>
   </div>  
-  <div class="comment col-md-1 col-sm-1 col-xs-1 btn btn-link ">
-    <span class="glyphicon glyphicon-comment"></span>
+  <div class="col-md-10">
+    <%= link_to(raw("<button class='btn btn-primary'>Комментировать</button>"), 
+        new_user_photo_comment_comments_path(user_id: current_user, photo_id: @photo, comment_parent_id: "0"))%>
+  </div>    
+  <div class="col-md-1 btn btn-link">
+    <button data-toggle="collapse" data-target="#collapse-list" class="glyphicon glyphicon-comment"></button>
   </div>
 </div>
+
+<div id="collapse-list" class="collapse in">
+  <% @comments = Comment.comments_for(@photo, 0)%>
+  <div class="col-md-12">
+  <ul class="com-list"><%= render @comments%></ul>
+  </div>
+</div>
+
+
 
 
 
