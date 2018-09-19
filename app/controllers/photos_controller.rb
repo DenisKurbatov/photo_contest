@@ -1,5 +1,5 @@
 class PhotosController < ApplicationController
-  
+  before_action :take_photo, only: [:show, :destroy]
   def new
     @photo = Photo.new
   end
@@ -16,7 +16,7 @@ class PhotosController < ApplicationController
   end
 
   def index
-    @photos = Photo.order("created_at").page params[:page]
+    @photos = Photo.order(created_at: :asc).page params[:page]
   end
   
   def index_my_photos
@@ -24,10 +24,10 @@ class PhotosController < ApplicationController
   end
 
   def show 
-    @photo = Photo.find(params[:id])
+    
   end
   def destroy
-    @photo = Photo.find(params[:id])
+    
     @photo.destroy
     flash[:success] = "Фотография успешно удалена"
     redirect_to user_photo_path(current_user)
@@ -37,5 +37,9 @@ class PhotosController < ApplicationController
 
   def photo_params
     params.require(:photo).permit(:name, :image)
+  end
+
+  def take_photo
+    @photo = Photo.find(params[:id])
   end
 end

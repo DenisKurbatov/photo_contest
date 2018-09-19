@@ -29,8 +29,7 @@
   <%if current_user%>
     <div class="col-md-10">
     <%=   link_to(raw("<button class='btn btn-primary'>Комментировать</button>"), 
-          new_user_photo_comment_comments_path(user_id: current_user, photo_id: @photo, 
-                                              comment_parent_id: "0"))%>
+          new_user_photo_comment_comments_path(@photo, comment_parent_type: :photo, comment_parent_id: @photo.id) )%>
     </div>  
   <% end %>  
   <div class="col-md-1 btn btn-link">
@@ -38,10 +37,12 @@
   </div>
 </div>
 <div id="collapse-list" class="collapse in">
-  <% @comments = Comment.comments_for(@photo, 0)%>
+  <% @comments = Comment.get_comments("Photo", @photo.id)%>
   <div class="col-md-12">
     <ul class="com-list"><%= render @comments%></ul>
 </div>
+
+
 
 
 

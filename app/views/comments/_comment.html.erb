@@ -8,16 +8,16 @@
   </div>
   <div class="content col-md-12"><%= comment.body %></div>
   <% if current_user %>
-    <%= link_to("Комментировать", new_user_photo_comment_comments_path( user_id: current_user, 
-                                                                      photo_id: @photo, comment_parent_id: comment), 
-                                                                      class: "btn btn-primary")%>
+    <%= link_to("Комментировать", new_user_photo_comment_comments_path(@photo, comment_parent_type: :comment, 
+                                                                                comment_parent_id: comment.id),
+                                                                                class: "btn btn-primary")%>
   <% else%>
      <%= link_to("Комментировать", photo_path(@photo), danger: "Войдите, чтобы комментиовать", 
                                                         class: "btn btn-primary") %>
   <% end %>
   <div class="col-md-11 col-md-offset-1">
     <ul class= "com-list">
-      <% @comments_child = comment.comment_children %>
+      <% @comments_child = Comment.get_comments("Comment", comment.id) %>
       <%= render @comments_child%>
     </ul>
   </div>
