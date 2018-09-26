@@ -1,24 +1,27 @@
-<li class="comment row">
-  <div class="author col-md-6">
-    <% user=User.find(comment.user_id)%>
-    <%= user.name %> :
+<li>
+<div class = "comment">
+  <div class="row title">
+    <div class="col-md-6">
+      <% author = User.find(comment.user_id)%>
+      <%= author.name %>:
+    </div>
+    <div class="col-md-6 text-right">
+      <%= comment.created_at%> 
+    </div>
   </div>
-  <div class="date col-md-6">
-    <%= comment.created_at%>
+  <div class="row">
+    <p class = "content col-md-12 center-block"> <%= comment.body %> </p>
   </div>
-  <div class="content col-md-12"><%= comment.body %></div>
-  <% if current_user %>
-    <%= link_to("Комментировать", new_user_photo_comment_comments_path(@photo, comment_parent_type: :comment, 
-                                                                                comment_parent_id: comment.id),
-                                                                                class: "btn btn-primary")%>
-  <% else%>
-     <%= link_to("Комментировать", photo_path(@photo), danger: "Войдите, чтобы комментиовать", 
-                                                        class: "btn btn-primary") %>
-  <% end %>
-  <div class="col-md-11 col-md-offset-1">
-    <ul class= "com-list">
-      <% @comments_child = Comment.get_comments("Comment", comment.id) %>
-      <%= render @comments_child%>
-    </ul>
+  <div class="row">
+    <div class="col-md-2 pull-right">
+      <%=   link_to(raw("<button class='btn btn-primary pull-right'>Комментировать</button>"), 
+          new_user_photo_comment_comments_path(@photo, comment_parent_type: :comment, comment_parent_id: comment.id) )%>
+   
+    </div>
   </div>
+<div>
+<% @comments = Comment.get_comments("Comment", comment.id)%>
+<div class="row">
+<ul class="col-md-offset-1 col-md-11 chl-com pull-right"> <%= render @comments %> </ul>
+</div>
 </li>

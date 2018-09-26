@@ -1,47 +1,59 @@
-<div class="row">
+<% provide(:title, @photo.name) %>
+
+<div class="row photo-title center-block">
   <div class="col-md-10">
     <h1> <%= @photo.name %> </h1>
   </div>
-  <% if current_user == @photo.user  %>
-    <div class="col-md-2">
-      <%= link_to(raw("<button class='glyphicon glyphicon-remove'></button>"), @photo, 
+  <div class="col-md-2 del-photo text-right">
+    <% if current_user && ( current_user.id == @photo.user_id ) %>
+    <%= link_to(raw("<span class='glyphicon glyphicon-remove'></span>"), @photo, 
                       method: :delete, data: { confirm: "Вы действительно хотите удалить фото?" } )%>
-    </div>
-  <% end %>
-  <%= image_tag(@photo.image.full.url, alt:"Photo", class: "col-md-12") %>
-</div>
-<div class="row">
-  <% if (current_user != @photo.user) && current_user %>
-    <div class = " offset-md-2 col-md-1">
-      <% like=Like.find_by(photo: @photo, user: current_user) %>
-      <% if like %>      
-        <%=link_to(raw('<span class="active glyphicon glyphicon-heart"></span>'), 
-            photo_like_path(photo_id: @photo, id: like.id), method: :delete )%>
-      <% else %>
-        <%=link_to(raw('<span class="glyphicon glyphicon-heart"></span>'), 
-            photo_likes_path(photo_id: @photo), method: :post)%>
-      <% end %>
-      <%= @photo.likes_count%>
-    </div>  
-  <% else %>
-    <%= @photo.likes_count%>
-  <% end %>
-  <%if current_user%>
-    <div class="col-md-10">
-    <%=   link_to(raw("<button class='btn btn-primary'>Комментировать</button>"), 
-          new_user_photo_comment_comments_path(@photo, comment_parent_type: :photo, comment_parent_id: @photo.id) )%>
-    </div>  
-  <% end %>  
-  <div class="col-md-1 btn btn-link">
-    <button data-toggle="collapse" data-target="#collapse-list" class="glyphicon glyphicon-comment"></button>
+    <%else%>
+      <% author=User.find(@photo.user_id) %>
+    <span>Автор: <%= author.name %></span>
+    <%end%>
+
   </div>
 </div>
-<div id="collapse-list" class="collapse in">
-  <% @comments = Comment.get_comments("Photo", @photo.id)%>
-  <div class="col-md-12">
-    <ul class="com-list"><%= render @comments%></ul>
+<%= image_tag(@photo.image.full.url, alt: "Photo", class: "center-block") %>
+<div class="row center-block">
+  <div class="col-md-1">
+    <% if current_user %>
+      <% if current_user.id == @photo.user_id %>
+        <%=link_to(raw('<span class="glyphicon glyphicon-heart gray"></span>'), @photo, method: :get)%>
+      <% else %>
+        <% like = Like.find_by(photo: @photo, user: current_user)%>
+        <% if like %>
+          <%=link_to(raw('<span class="glyphicon glyphicon-heart red"></span>'), photo_like_path(@photo, like), 
+                                                                                                method: :delete)%>
+        <% else %>
+          <%=link_to(raw('<span class="glyphicon glyphicon-heart blue"></span>'), photo_likes_path(@photo), 
+                                                                                                method: :create)%>
+        <% end %>
+      <% end %>
+    <% else %>
+      <%=link_to(raw('<span class="glyphicon glyphicon-heart gray"></span>'), @photo, method: :get)%>
+    <% end %>
+    <%= @photo.likes_count %>
+  </div>
+  <div class="col-md-9">
+  </div>
+  <div class="col-md-2">
+    <%= link_to(raw("<button class='btn btn-primary pull-right'>Комментировать</button>"), 
+          new_user_photo_comment_comments_path(@photo, comment_parent_type: :photo, comment_parent_id: @photo.id) )%>
+  </div>
+
 </div>
-</div>
+<% @comments = Comment.get_comments("Photo", @photo.id)%>
+
+<ul id="comments-list" class="center-block"> <%= render @comments %> </ul>
+
+  
+
+
+
+  
+
 
 
 

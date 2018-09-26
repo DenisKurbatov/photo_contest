@@ -1,13 +1,63 @@
-<div class="row">
-  <div class="col-md-12">
-    
+
+
+<% if params[:comment_parent_type] == "photo" %>
+  <% photo = Photo.find(params[:photo_id]) %>
+  <% @comments = Comment.get_comments("Photo", params[:comment_parent_id])%>
+  
+  <%= image_tag(photo.image.full.url, alt: "Photo", size: "1000x700", class: "center-block") %>
+  <div class="row center-block">
+    <%=form_for(@comment, url: user_photo_comment_comments_path, method: :post ) do |f| %>
+      <%=f.text_area :body, class: "col-md-9" %>
+      <%=f.submit "Отправить", class: "btn btn-primary" %>
+    <% end %>
   </div>
-</div>
-<div class="row col-offset-1">
-  <%=form_for(@comment, url: user_photo_comment_comments_path, method: :post ) do |f| %>
-    <%=f.text_area :body, class: "col-md-9" %>
-    <%=f.submit "Отправить", class: " col-md-1 btn btn-primary" %>
-  <%end %>
-</div>
+  <ul id="comments-list" class="center-block">
+    <% @comments.each do |comment| %>
+      <li>
+        <div class = "comment">
+          <div class="row title">
+            <div class="col-md-6">
+              <% author = User.find(comment.user_id)%>
+              <%= author.name %>:
+            </div>
+            <div class="col-md-6 text-right">
+              <%= comment.created_at%> 
+            </div>
+          </div>
+
+          <div class="row">
+            <p class = "content col-md-12 center-block"> <%= comment.body %> </p>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <% comment_parent = Comment.find(params[:comment_parent_id]) %>
+  <ul id="comments-list">
+    <li>
+      <div class = "comment">
+        <div class="row title">
+          <div class="col-md-6">
+            <% author = User.find(comment_parent.user_id)%>
+            <%= author.name %>:
+          </div>
+          <div class="col-md-6 text-right">
+            <%= comment_parent.created_at%> 
+          </div>
+        </div>
+        <div class="row">
+          <p class = "content col-md-12 center-block"> <%= comment_parent.body %> </p>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <div class="center-block">
+    <%=form_for(@comment, url: user_photo_comment_comments_path, method: :post ) do |f| %>
+      <%=f.text_area :body, class: "col-md-9" %>
+      <%=f.submit "Отправить", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+<% end %>
 
  

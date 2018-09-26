@@ -2,8 +2,15 @@ class LikesController < ApplicationController
 
   def create
     photo = Photo.find(params[:photo_id])
-    @like = Like.create(photo: photo, user: current_user)
-    redirect_to photo
+    @like = Like.new(photo: photo, user: current_user)
+    respond_to do |format|
+      if @like.save
+        format.html { redirect_to photo }
+        format.js
+      else
+        
+      end
+    end
   end
 
   def destroy

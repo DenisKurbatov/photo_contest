@@ -11,6 +11,8 @@ gem 'rails', '~> 5.2.0'
 gem 'bootstrap-sass'
 gem 'bootstrap-glyphicons'
 gem 'kaminari'
+gem 'activeadmin'
+gem 'aasm'
 
 gem 'carrierwave'
 gem "mini_magick"

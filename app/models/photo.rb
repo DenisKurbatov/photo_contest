@@ -17,8 +17,10 @@
 #
 
 class Photo < ApplicationRecord
+  include AASM
+
   mount_uploader :image, PhotoUploader
-  belongs_to :user, foreign_key: "user_id"
+  belongs_to :user
   has_many :likes, dependent: :destroy
   has_many :comments, as: :comment_parent
 
@@ -26,9 +28,27 @@ class Photo < ApplicationRecord
   validates :name, presence: true
   validates :image, presence: true
 
-  scope :from_user, ->(user_id) { where(user_id: user_id) }
-  paginates_per 12
+  scope :by_user, ->(user_id) { where(user_id: user_id) }
+  scope :banned, ->{ where(aasm_state: :banned) }
+  scope :approved, ->{ where(aasm_state: :approved) }
+  scope :moder, ->{ where(aasm_state: :moder) }
 
+  paginates_per 8
+
+
+  aasm do
+    state :moder, initial: true
+    state :approved
+    state :banned
+
+    event :approve do
+      transitions from: [:moder, :banned], to: :approved
+    end
+
+    event :ban do
+      transitions from: [:moder, :approved], to: :banned
+    end
+  end
 
   
 end
