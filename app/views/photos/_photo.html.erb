@@ -1,10 +1,19 @@
-<div class="col-md-3 img" data-photo-id="<%= photo.id %>" >
+<div class="col-md-3 img" >
   <%= image_tag(photo.image.thumb.url, alt: "Photo") %>
   <div class = "overlay"></div>
   <div class="title"><%= link_to(photo.name, photo_path(photo), method: :get )%></div>
   
-  <div class="like">
-    <%= link_to("LIKE",  photo_likes_path(photo.id), method: :post, remote: true )%> 
+  <div id ="<%= photo.id %>" class="like" data-photo-id="<%= photo.id %>">
+    <% if !current_user || (current_user.id == photo.user_id) %>
+      <span class="glyphicon glyphicon-heart gray" ></span>
+    <% else %>
+      <% like = Like.find_by(user_id: current_user.id, photo_id: photo.id) %>
+      <% if like %>
+        <span class="remove-like glyphicon glyphicon-heart red" data-like-id="<%= like.id %>" ></span>    
+      <% else %>
+        <span class="add-like glyphicon glyphicon-heart blue" ></span>
+      <% end %>
+    <% end %>
     <span class="count-like"><%=photo.likes_count%></span>
   </div>
 
