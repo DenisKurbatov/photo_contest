@@ -24,13 +24,10 @@ $(document).ready(function(){
       type: "POST",
       dataType: "json",
       success: function(res) {
-
-        $("#" + res.photo_id + " .add-like").replaceWith("<span class='remove-like glyphicon glyphicon-heart red' data-like-id='" + res.like_id+"'></span>");
+        $("#" + res.photo_id + " .add-like").replaceWith("<span class='remove-like glyphicon glyphicon-heart red' data-like-id='" + res.like_id + "'></span>");
         $("#" + res.photo_id + " .count-like").replaceWith("<span class='count-like'>" + res.likes_count + "</span>");
-
       }
     });
-
   });
 
   $(".like").on("click", ".remove-like", function(){
@@ -40,20 +37,11 @@ $(document).ready(function(){
       dataType: "json",
       data: { _method: "DELETE" },
       success: function(res) {
-        console.log(res);
-
-        console.log(res.likes_count);
         $("#" + res.photo_id + " .remove-like").replaceWith("<span class='add-like glyphicon glyphicon-heart blue'></span>");
         $("#" + res.photo_id + " .count-like").replaceWith("<span class='count-like'>" + res.likes_count + "</span>");
       }
     });
-
-
   });
-
-  
-
-  
 
 });
 

@@ -153,7 +153,16 @@ body {
     }
   }
 }
-
+.sort{
+  padding: 0 0 0 10px;
+  .btn{
+    width: 120px;
+    color: black;
+    background-color: lightgray;
+    font-size: 10px;
+    padding: 0;
+  }
+}
 .navbar{
   margin-bottom: 10px;
   .nav {

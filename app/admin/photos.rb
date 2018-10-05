@@ -26,12 +26,13 @@ ActiveAdmin.register Photo do
     column :photo do |p|
       image_tag p.image.thumb.url
     end
+    column :likes_count
     column :author do |p|
       User.find(p.user_id).name
     end
     column :aasm_state
     actions dropdown: true do |p|
-      item "approve", approve_admin_photo_path(p)
+      item I18n.t(:approve), approve_admin_photo_path(p)
       item "ban", ban_admin_photo_path(p)
     end
 

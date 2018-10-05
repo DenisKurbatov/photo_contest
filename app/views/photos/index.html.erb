@@ -1,5 +1,15 @@
 <% provide(:title, "Галерея") %>
 <h1> Галерея фотоконкурса</h1>
+<div class="row sort">
+  <span class="">Сортировать по:</span>
+  <div class="">
+  <%= link_to("дате (сначала новые)", photos_path(sort: "created_at ASC"), class:"btn") %>
+  <%= link_to("дате (сначала старые)", photos_path(sort: "created_at DESC"), class:"btn") %>
+  <%= link_to("лайкам (по убыванию)", photos_path(sort: "likes_count DESC"), class:"btn") %>
+  <%= link_to("лайкам (по возрастанию)", photos_path(sort: "likes_count ASC"), class:"btn") %>
+  </div>
+</div>
+
 <div class="row gallery">  
   <%= render @photos %>  
 </div>
