@@ -17,6 +17,10 @@ class PhotosController < ApplicationController
   def index
     @photos = Photo.approved.page(params[:page])
     @photos = @photos.reorder(params[:sort]).page(params[:page]) if params[:sort].present?
+    if params[:search].present?
+      @photos = @photos.where("name LIKE '%#{params[:search]}%'")
+    end
+    
     
   end
   

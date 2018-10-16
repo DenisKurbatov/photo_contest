@@ -15,23 +15,10 @@ ActiveAdmin.register User do
 
   index do
     column :id
-    column :name
-    column :photos do |p|
+    column I18n.t("active_admin.users.name"), :name
+    column I18n.t("active_admin.users.photos"), :photos do |p|
       Photo.where(user_id: p.id).count
     end
-    actions default: false do |p|
-      item "view", admin_user_path(p)
-    end
-  end
-
-  show do
-    attributes_table do
-      row :provider
-      row :name
-      row :created_at
-      row :updated_at
-      
-    end
-    
+    actions dropdown: true
   end
 end

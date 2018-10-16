@@ -4,7 +4,7 @@ ActiveAdmin.register AdminUser do
   index do
     selectable_column
     id_column
-    column :email
+    column I18n.t("active_admin.admin_users.email"), :email
     column :current_sign_in_at
     column :sign_in_count
     column :created_at

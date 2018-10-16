@@ -10,6 +10,11 @@
   </div>
 </div>
 
+<form action="/photos" method="get">
+  <input name="search" placeholder="Искать здесь..." type="search">
+  <button type="submit">Поиск</button>
+</form>
+
 <div class="row gallery">  
   <%= render @photos %>  
 </div>

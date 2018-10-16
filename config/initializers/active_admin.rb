@@ -1,4 +1,6 @@
 ActiveAdmin.setup do |config|
+
+
   # == Site Title
   #
   # Set the title that is displayed on the main layout
@@ -145,7 +147,7 @@ ActiveAdmin.setup do |config|
   # You can add before, after and around filters to all of your
   # Active Admin resources and pages from here.
   #
-  # config.before_action :do_something_awesome
+  config.before_action :admin_locale
 
   # == Localize Date/Time Format
   #

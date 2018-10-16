@@ -14,6 +14,9 @@ gem 'kaminari'
 gem 'activeadmin'
 gem 'aasm'
 
+gem 'leaderboard'
+gem "redis-rails"
+
 gem 'carrierwave'
 gem "mini_magick"
 # Use sqlite3 as the database for Active Record
