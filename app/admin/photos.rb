@@ -22,18 +22,21 @@ ActiveAdmin.register Photo do
   index do
     selectable_column
     column :id
-    column I18n.t("active_admin.photos.name"), :name
-    column I18n.t("active_admin.photos.photo"), :photo do |p|
+    column I18n.t('active_admin.photos.name'), :name
+    column I18n.t('active_admin.photos.photo'), :photo do |p|
       image_tag p.image.thumb.url
     end
-    column I18n.t("active_admin.photos.likes_count"), :likes_count
-    column I18n.t("active_admin.photos.author"), :author do |p|
+    column I18n.t('active_admin.photos.likes_count'), :likes_count
+    column I18n.t('active_admin.photos.author'), :author do |p|
       User.find(p.user_id).name
     end
-    column I18n.t("active_admin.photos.aasm_state"), :aasm_state
+    column I18n.t('active_admin.photos.aasm_state'), :aasm_state
     actions dropdown: true do |p|
       item I18n.t(:approve), approve_admin_photo_path(p)
       item I18n.t(:ban), ban_admin_photo_path(p)
+      item :remove, remove_admin_photo_path(p)
+      item :cancel_remove, cancel_remove_admin_photo_path(p)
+      
     end
 
   end
@@ -44,6 +47,15 @@ ActiveAdmin.register Photo do
   end
   member_action :ban do
     resource.ban!
+    redirect_to admin_photos_path
+  end
+  member_action :remove do
+    resource.remove!
+    RemovePhotoWorker.perform_in(2.minutes, params[:id])
+    redirect_to admin_photos_path
+  end
+  member_action :cancel_remove do
+    resource.cancel_remove!
     redirect_to admin_photos_path
   end
 end

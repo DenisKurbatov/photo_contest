@@ -15,8 +15,8 @@ ActiveAdmin.register User do
 
   index do
     column :id
-    column I18n.t("active_admin.users.name"), :name
-    column I18n.t("active_admin.users.photos"), :photos do |p|
+    column I18n.t('active_admin.users.name'), :name
+    column I18n.t('active_admin.users.photos'), :photos do |p|
       Photo.where(user_id: p.id).count
     end
     actions dropdown: true

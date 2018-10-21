@@ -6,7 +6,7 @@ class CommentsController < ApplicationController
 
   def create
     photo = Photo.find(params[:photo_id])
-    if params[:comment_parent_type] == "photo"
+    if params[:comment_parent_type] == 'photo'
       @comment = photo.comments.new(user_id: current_user.id, 
                                     body: params[:comment][:body])
     else
@@ -23,6 +23,3 @@ class CommentsController < ApplicationController
     end
   end
 end
-
-private
-

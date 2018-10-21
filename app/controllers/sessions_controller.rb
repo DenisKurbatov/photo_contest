@@ -1,10 +1,14 @@
 class SessionsController < Devise::OmniauthCallbacksController
-  def vkontakte
-    @user = User.from_omniauth(request.env["omniauth.auth"])
   
-    if @user.persisted?
-      session[:user_id] = @user.id
-    end
+  def vkontakte
+    @user = User.from_omniauth(request.env['omniauth.auth'])
+    session[:user_id] = @user.id if @user.persisted?
+    redirect_to root_path
+  end
+
+  def github
+    @user = User.from_omniauth(request.env['omniauth.auth'])
+    session[:user_id] = @user.id if @user.persisted?
     redirect_to root_path
   end
 
@@ -14,4 +18,3 @@ class SessionsController < Devise::OmniauthCallbacksController
     redirect_to root_path
   end
 end
-

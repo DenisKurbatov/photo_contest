@@ -1,5 +1,7 @@
-ru:
-  
+ru:  
+  time:
+    formats:
+      long: "%Y-%m-%d %H:%M:%S"
   active_admin:
     approve: "Подтвердить"
     ban: "Заблокировать"
@@ -7,9 +9,6 @@ ru:
     banned: "Заблокировано"
     moder: "На модерации"
     all: "Все"
-    time:
-      formats:
-        long: "%Y-%m-%d %H:%M:%S"
     photos:
       name: "Название фото"
       photo: "Фото"
@@ -23,8 +22,6 @@ ru:
       name: "Имя"
       photos: "Фотографий"
       dashboard: "Панель управления"
-
-      
     dashboard_welcome:
       welcome: "Добро пожаловать в Active Admin. Это стандартная страница управления сайтом."
       call_to_action: "Чтобы добавить сюда что-нибудь загляните в 'app/admin/dashboard.rb'"

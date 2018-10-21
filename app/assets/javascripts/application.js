@@ -49,7 +49,7 @@ $(document).ready(function(){
 
 Share = {
 	vkontakte: function(purl, ptitle, pimg, text) {
-		url  = 'http://vkontakte.ru/share.php?';
+		url  = 'http://vk.com/share.php?';
 		url += 'url='          + encodeURIComponent(purl);
 		url += '&title='       + encodeURIComponent(ptitle);
 		url += '&description=' + encodeURIComponent(text);

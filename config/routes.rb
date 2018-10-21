@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
   devise_for :users, controllers: { omniauth_callbacks: 'sessions' }
+  devise_for :admin_users, ActiveAdmin::Devise.config
+
+  ActiveAdmin.routes(self)
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root "static_pages#home"
+  root 'static_pages#home'
   devise_scope :user do
     delete 'logout', to: 'sessions#destroy'
   end

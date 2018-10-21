@@ -7,12 +7,20 @@ ruby '2.4.1'
 gem 'devise'
 
 gem 'omniauth-vkontakte'
+gem 'omniauth-twitter'
+gem 'omniauth-github'
+
 gem 'rails', '~> 5.2.0'
 gem 'bootstrap-sass'
 gem 'bootstrap-glyphicons'
 gem 'kaminari'
 gem 'activeadmin'
 gem 'aasm'
+gem 'rubocop'
+
+gem 'sidekiq'
+
+
 
 gem 'leaderboard'
 gem "redis-rails"

@@ -262,6 +262,9 @@ Devise.setup do |config|
     :https => 1,
     :lang => 'ru'
   }
+  config.omniauth :github, '2fc99c57abf3f5dacec1', '6ec9f34ed00f99c5e3b050f1e9010bdd7bcfb510', scope: 'user,public_repo'
+  
+
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

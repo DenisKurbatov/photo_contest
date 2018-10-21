@@ -18,7 +18,7 @@
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :omniauthable, omniauth_providers: [:vkontakte]
+  devise :omniauthable, omniauth_providers: [:vkontakte, :github]
   has_many :comments
   has_many :photos, dependent: :destroy
   has_many :likes, dependent: :destroy
