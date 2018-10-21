@@ -28,7 +28,7 @@ ActiveAdmin.register Photo do
     end
     column I18n.t('active_admin.photos.likes_count'), :likes_count
     column I18n.t('active_admin.photos.author'), :author do |p|
-      User.find(p.user_id).name
+      a User.find(p.user_id).name, href: User.find(p.user_id).url
     end
     column I18n.t('active_admin.photos.aasm_state'), :aasm_state
     actions dropdown: true do |p|

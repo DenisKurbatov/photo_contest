@@ -15,10 +15,22 @@ ActiveAdmin.register User do
 
   index do
     column :id
-    column I18n.t('active_admin.users.name'), :name
+    column I18n.t('active_admin.users.name'), :name do |p|
+      a p.name, href: p.url
+    end
+    column I18n.t('active_admin.photos.photo'), :photo do |p|
+      image_tag p.image
+    end
     column I18n.t('active_admin.users.photos'), :photos do |p|
       Photo.where(user_id: p.id).count
     end
+    column :count do |p|
+      count = 0
+      Photo.by_user(p.id).each { |x| count+=x.likes_count }
+      count
+    end
+    
+    
     actions dropdown: true
   end
 end

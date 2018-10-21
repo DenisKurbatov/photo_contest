@@ -15,8 +15,9 @@ class PhotosController < ApplicationController
   end
 
   def index
+    
     @photos = Photo.approved.page(params[:page])
-    @photos = @photos.reorder(params[:sort]).page(params[:page]) if params[:sort].present?
+    @photos = @photos.reorder("#{sort_column} #{sort_direction}")
     if params[:search].present?
       @photos = @photos.where("name ILIKE '%#{params[:search]}%'")
     end
@@ -34,8 +35,11 @@ class PhotosController < ApplicationController
 
   private
 
-  def photo_params
-    params.require(:photo).permit(:name, :image)
+  def sort_column
+    Photo.column_names.include?(params[:sort]) ? params[:sort] : "likes_count"
+  end
+  def sort_direction
+    %w[asc desc].include?(params[:direction]) ? params[:direction] : "asc"
   end
 
   def take_photo

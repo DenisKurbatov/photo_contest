@@ -20,7 +20,7 @@ gem 'rubocop'
 
 gem 'sidekiq'
 
-
+gem 'activeadmin_addons'
 
 gem 'leaderboard'
 gem "redis-rails"

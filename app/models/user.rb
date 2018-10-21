@@ -24,10 +24,19 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
 
   def self.from_omniauth(auth)
+
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+    
       user.name = auth.info.name
       user.provider = auth.provider
-      user.image = auth.info.image
+      user.email = auth.info.email
+      if user.providers == "vkontakte"
+        user.image = auth.extra.raw_info.photo_400_orig
+        user.urls = uth.info.urls.Vkontakte
+      else
+        user.image = auth.info.image
+        user.url = auth.info.urls.GitHub
+      end
     end
     
   end
