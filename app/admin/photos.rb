@@ -66,7 +66,6 @@ ActiveAdmin.register Photo do
   end
   member_action :remove do
     resource.remove!
-   
     redirect_to admin_photos_path
   end
   member_action :cancel_remove do
