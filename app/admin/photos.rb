@@ -66,7 +66,7 @@ ActiveAdmin.register Photo do
   end
   member_action :remove do
     resource.remove!
-    RemovePhotoWorker.perform_in(2.minutes, params[:id])
+   
     redirect_to admin_photos_path
   end
   member_action :cancel_remove do
