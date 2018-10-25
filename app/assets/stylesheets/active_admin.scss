@@ -11,6 +11,12 @@
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";
+.status_tag {
+  &.moder { background: gray ; }
+  &.approved { background: green; }
+  &.banned { background: orange; }
+  &.removed { background: red; }
+}
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:

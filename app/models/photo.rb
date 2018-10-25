@@ -22,19 +22,17 @@ class Photo < ApplicationRecord
   mount_uploader :image, PhotoUploader
   belongs_to :user
   has_many :likes, dependent: :destroy
-  has_many :comments, as: :comment_parent
-
+  has_many :comments, as: :comment_parent, dependent: :destroy
 
   validates :name, presence: true
   validates :image, presence: true
 
   scope :by_user, ->(user_id) { where(user_id: user_id) }
-  scope :banned, ->{ where(aasm_state: :banned) }
-  scope :approved, ->{ where(aasm_state: :approved) }
-  scope :moder, ->{ where(aasm_state: :moder) }
+  scope :banned, -> { where(aasm_state: :banned) }
+  scope :approved, -> { where(aasm_state: :approved) }
+  scope :moder, -> { where(aasm_state: :moder) }
 
   paginates_per 8
-
 
   aasm do
     state :moder, initial: true
@@ -43,41 +41,41 @@ class Photo < ApplicationRecord
     state :removed
 
     event :approve do
-      transitions from: [:moder, :banned], to: :approved
+      transitions from: %i[moder banned], to: :approved
     end
 
     event :ban do
       transitions from: :moder, to: :banned
     end
 
-    event :remove, :before_transaction => :past_state do
-      transitions from: [:moder, :approved, :banned], to: :removed
+    event :remove, before_transaction: :past_state_save do
+      transitions from: %i[moder approved banned], to: :removed
     end
 
-    event :cancel_remove, :before_transaction => :get_past_state do
-      transitions from: :removed, to: :approved, :guard => :approved?
-      transitions from: :removed, to: :banned, :guard => :banned?
-      transitions from: :removed, to: :moder, :guard => :moder?
+    event :cancel_remove, before_transaction: :past_state do
+      transitions from: :removed, to: :approved, guard: :approved?
+      transitions from: :removed, to: :banned, guard: :banned?
+      transitions from: :removed, to: :moder, guard: :moder?
     end
+  end
+  def past_state_save
+    PastState.rank_member(id, 1, { past_state: aasm.current_state }.to_json)
+  end
 
-  end
-  def past_state 
-    PastState.rank_member(id, 1, {:past_state => aasm.current_state}.to_json)
-    
-  end
-  def get_past_state
+  def past_state
     @past_state = JSON.parse(PastState.member_data_for(id))['past_state'].to_sym
     PastState.remove_member(id)
   end
+
   def moder?
     @past_state == :moder
   end
+
   def banned?
     @past_state == :banned
   end
+
   def approved?
     @past_state == :approved
   end
-
-  
 end

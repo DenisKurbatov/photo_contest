@@ -1,27 +1,43 @@
-ru:  
+ru:
+  formtastic: 
+    labels:
+      name_or_uid: "uid или имя"
+  approve: "Одобрить"
+  ban: "Заблокировать"
+  remove: "Удалить"
+  cancel_remove: "Отменить удаление"
+  activerecord:
+    models:
+      admin_user: Администраторы
+      photo: Фото
+      user: Пользователи
+    attributes:
+      admin_user:
+        email: "Адрес электронной почты"
+      user:
+        name: "Имя"
+        photo: "Аватар"
+        photos_count: "Количество фотографий"
+        all_likes_count: "Общее количество голосов"
+      photo:
+        name: "Назание фото"
+        photo: "Фото"
+        likes_count: "Количество лайков"
+        author: "Автор"
+        aasm_state: "Статус"
+        aasm_state/moder: "На модерации"
+        aasm_state/removed: "На удалении"
+        aasm_state/approved: "Одобрена"
+        aasm_state/banned: "Заблокирована"
   time:
     formats:
       long: "%Y-%m-%d %H:%M:%S"
   active_admin:
-    approve: "Подтвердить"
-    ban: "Заблокировать"
-    approved: "Подтверждено"
-    banned: "Заблокировано"
-    moder: "На модерации"
-    all: "Все"
-    photos:
-      name: "Название фото"
-      photo: "Фото"
-      likes_count: "Количество голосов"
-      author: "Автор"
-      aasm_state: "Статус"
-      moderation: "Действия"
-    admin_users:
-      email: "Адрес электронной почты"
-    users:
-      name: "Имя"
-      photos: "Фотографий"
-      dashboard: "Панель управления"
+    scopes:
+      all: "Все"
+      banned: "Заблокированные"
+      approved: "Одобренные"
+      moder: "На модерации"
     dashboard_welcome:
       welcome: "Добро пожаловать в Active Admin. Это стандартная страница управления сайтом."
       call_to_action: "Чтобы добавить сюда что-нибудь загляните в 'app/admin/dashboard.rb'"

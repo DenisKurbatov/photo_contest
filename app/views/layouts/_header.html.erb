@@ -27,8 +27,8 @@
               Войти <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><%= link_to "Вконтакте", user_vkontakte_omniauth_authorize_path %></li>
-              <li><%= link_to " GitHub", user_github_omniauth_authorize_path %></li>
+              <li><%= link_to "Вконтакте", '/auth/vkontakte' %></li>
+              <li><%= link_to " GitHub", '/auth/github' %></li>
             </ul>
           </li>
         <% end %>
