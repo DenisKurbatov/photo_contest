@@ -1,6 +1,6 @@
 # EnforcedStyle: with_first_parameter
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :vkontakte, ENV['API_KEY'], ENV['API_SECRET'], scope: 'email',
+  provider :vkontakte, '6640136', 'yrTIZ5zzKSPXoO8EMIGg', scope: 'email',
                                                           display: 'popup',
                                                           https: 1,
                                                           lang: 'ru'
