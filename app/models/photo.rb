@@ -59,7 +59,7 @@ class Photo < ApplicationRecord
     end
   end
   def past_state_save
-    PastState.rank_member(id, 1, { past_state: aasm.current_state }.to_json)
+    PastState.rank_member("#{id}", 1, { past_state: aasm.current_state }.to_json)
   end
 
   def past_state
