@@ -18,6 +18,7 @@ gem 'figaro'
 gem 'kaminari'
 gem 'rails', '~> 5.2.0'
 gem 'rubocop'
+gem 'dalli'
 
 gem 'sidekiq'
 
