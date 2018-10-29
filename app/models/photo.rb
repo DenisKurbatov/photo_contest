@@ -60,6 +60,7 @@ class Photo < ApplicationRecord
   end
   def past_state_save
     PastState.rank_member("#{id}", 1, { past_state: aasm.current_state }.to_json)
+    RemovePhotoWorker.perform_in(2.minutes, id)
   end
 
   def past_state
