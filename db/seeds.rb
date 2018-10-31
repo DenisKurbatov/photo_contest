@@ -5,4 +5,8 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password')
+unless Rails.env.production? 
+  AdminUser.find_or_create_by(email: 'admin@example.com') do |adminuser|
+    adminuser.password = "password"
+  end
+end

@@ -38,7 +38,8 @@
   </div>
   
   <div class="col-md-9 share">
-    <span onclick="Share.vkontakte(window.location.href,'TITLE','IMAGE','DESC')" class="glyphicon glyphicon-share-alt gray" ></span>
+    <% share_vk = "Share.vkontakte(window.location.href, '#{@photo.name}', '#{request.base_url}/#{@photo.image.thumb.url}')" %>
+    <span onclick="<%= share_vk %>" class="glyphicon glyphicon-share-alt gray" ></span>
   </div>
 
   <div class="col-md-2">

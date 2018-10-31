@@ -22,10 +22,11 @@ ActiveAdmin.register User do
       a p.name, href: p.url
     end
     column :photo do |p|
-      image_tag p.image, size: "50x50"
+      image_tag p.image, size: '50x50'
     end
     column :photos_count do |p|
-      link_to Photo.where(user_id: p.id).count, admin_photos_path(user_id: p.id)
+      link_to 'test', admin_photos_path(q: { user_id_eq: p.id })
+      #link_to Photo.where(user_id: p.id).count, admin_photos_path(user_id: p.id)
     end
     column :all_likes_count do |p|
       count = 0

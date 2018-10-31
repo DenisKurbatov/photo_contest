@@ -18,7 +18,7 @@
 
 class Photo < ApplicationRecord
   include AASM
-
+  delegate :name, to: :user, allow_nil: true, prefix: :author
   mount_uploader :image, PhotoUploader
   belongs_to :user
   has_many :likes, dependent: :destroy
@@ -59,7 +59,7 @@ class Photo < ApplicationRecord
     end
   end
   def past_state_save
-    PastState.rank_member("#{id}", 1, { past_state: aasm.current_state }.to_json)
+    PastState.rank_member(id.to_s, 1, { past_state: aasm.current_state }.to_json)
     RemovePhotoWorker.perform_in(2.minutes, id)
   end
 

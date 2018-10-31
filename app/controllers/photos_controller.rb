@@ -18,6 +18,10 @@ class PhotosController < ApplicationController
     @photos = Photo.approved.page(params[:page])
     @photos = @photos.reorder("#{sort_column} #{sort_direction}")
     @photos = @photos.where("name ILIKE '%#{params[:search]}%'") if params[:search].present?
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def show; end

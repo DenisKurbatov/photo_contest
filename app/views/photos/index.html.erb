@@ -8,16 +8,16 @@
 <div class="row sort">
   <span class="">Сортировать по:</span>
   <div class="">
-    <%= link_to "дате (сначала новые)", {sort: 'created_at', direction: 'desc'}, {class: "btn"} %>
-    <%= link_to "дате (сначала старые)", {sort: 'created_at', direction: 'asc'}, {class: "btn"} %>
-    <%= link_to "лайкам (по убыванию)", {sort: 'likes_count', direction: 'desc'}, {class: "btn"} %>
-    <%= link_to "лайкам (по возрастанию)", {sort: 'likes_count', direction: 'asc'}, {class: "btn"} %>
+    <%= link_to "дате (сначала новые)", {remote: true, sort: 'created_at', direction: 'desc'}, {class: "btn"}%>
+    <%= link_to "дате (сначала старые)", {remote: true, sort: 'created_at', direction: 'asc'}, {class: "btn"} %>
+    <%= link_to "лайкам (по убыванию)", {remote: true, sort: 'likes_count', direction: 'desc'}, {class: "btn"} %>
+    <%= link_to "лайкам (по возрастанию)", {remote: true, sort: 'likes_count', direction: 'asc'}, {class: "btn"} %>
   </div>
 </div>
 
 
 
-<div class="row gallery">  
+<div id = "gal" class="row gallery">  
   <%= render @photos %>  
 </div>
 <%= paginate @photos %>
