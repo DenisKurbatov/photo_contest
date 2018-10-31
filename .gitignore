@@ -35,4 +35,9 @@
 /config/application.yml
 
 .vscode
+.rubocop.yml
+dump.rdb
+.ruby-version
+package.json
+
 
