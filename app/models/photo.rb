@@ -19,6 +19,7 @@
 class Photo < ApplicationRecord
   include AASM
   delegate :name, to: :user, allow_nil: true, prefix: :author
+  delegate :url, to: :user, allow_nil: true, prefix: :author
   mount_uploader :image, PhotoUploader
   belongs_to :user
   has_many :likes, dependent: :destroy

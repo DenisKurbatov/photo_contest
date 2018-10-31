@@ -12,32 +12,26 @@ ActiveAdmin.register Photo do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
+  config.per_page = 8
+  actions :index, :show
 
   scope :all
   scope :banned
   scope :approved
   scope :moder
 
-  controller do
-    def scoped_collection
-      if params[:user_id].present?
-        end_of_association_chain.where(user_id: params[:user_id])
-      else
-        end_of_association_chain.all
-      end
-    end
-  end
+
+
 
   index do
-    selectable_column
     column :id
     column :name
-    column :photo do |p|
-      image_tag p.image.thumb.url
+    column :photo do |photo|
+      link_to(image_tag(photo.image.thumb.url), admin_photo_path(photo.id))
     end
     column :likes_count
-    column :author do |p|
-      a User.find(p.user_id).name, href: User.find(p.user_id).url
+    column :author do |photo|
+      link_to photo.author_name, admin_user_path(photo.user_id)
     end
     state_column :aasm_state
 
@@ -55,6 +49,23 @@ ActiveAdmin.register Photo do
       item I18n.t(:cancel_remove), cancel_remove_admin_photo_path(p) if p.aasm_state == 'removed'
     end
   end
+
+  show do
+    attributes_table do
+      row :photo do |photo|
+        image_tag photo.image.thumb.url
+      end
+      row :likes_count
+      row :author do |photo|
+        link_to photo.author_name, admin_user_path(photo.user_id)
+      end
+      row :name
+      row :created_at
+      state_row :aasm_state
+    end
+  end
+
+
 
   member_action :approve do
     resource.approve!

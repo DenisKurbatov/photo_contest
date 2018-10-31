@@ -17,6 +17,9 @@
   &.banned { background: orange; }
   &.removed { background: red; }
 }
+div.download_links {
+  display: none;
+}
 
 // Overriding any non-variable SASS must be done after the fact.
 // For example, to change the default status-tag color:

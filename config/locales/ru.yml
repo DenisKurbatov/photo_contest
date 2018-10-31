@@ -29,10 +29,14 @@ ru:
         aasm_state/removed: "На удалении"
         aasm_state/approved: "Одобрена"
         aasm_state/banned: "Заблокирована"
+        created_at: "Дата загрузки"
   time:
     formats:
       long: "%Y-%m-%d %H:%M:%S"
   active_admin:
+    user:
+      show:
+        photos: "Фотографии пользователя"
     scopes:
       all: "Все"
       banned: "Заблокированные"
@@ -80,7 +84,7 @@ ru:
       "no": "Нет"
     main_content: "Создайте %{model}#main_content для отображения содержимого."
     logout: "Выйти"
-    powered_by: "Работает на %{active_admin} %{version}"
+    powered_by: ""
     sidebars:
       filters: "Фильтры"
       search_status: "Статус поиска"

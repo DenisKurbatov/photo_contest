@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  menu priorety: 2
+  menu priority: 2
   # See permitted parameters documentation:
   # https://github.com/activeadmin/activeadmin/blob/master/docs/2-resource-customization.md#setting-up-strong-parameters
   #
@@ -13,25 +13,54 @@ ActiveAdmin.register User do
   #   permitted
   # end
 
+  actions :index, :show
   filter :name_or_uid, as: :string
+  
 
+  
   index do
     column :id
     column :uid
-    column :name do |p|
-      a p.name, href: p.url
+    column :name do |user|
+      a user.name, href: user.url
     end
-    column :photo do |p|
-      image_tag p.image, size: '50x50'
+    column :photo do |user|
+      image_tag user.image, size: '50x50'
     end
-    column :photos_count do |p|
-      link_to 'test', admin_photos_path(q: { user_id_eq: p.id })
-      #link_to Photo.where(user_id: p.id).count, admin_photos_path(user_id: p.id)
+    column :photos_count do |user|
+      link_to user.photos.count, admin_photos_path(q: { user_id_eq: user.id })
+     
     end
-    column :all_likes_count do |p|
+    column :all_likes_count do |user|
       count = 0
-      Photo.by_user(p.id).each { |x| count += x.likes_count }
+      Photo.by_user(user.id).each { |x| count += x.likes_count }
       count
     end
   end
+
+  show do
+    attributes_table do
+      row :photo do |user|
+        image_tag user.image, size: "100x100"
+      end
+      row :name do |user|
+        link_to user.name, user.url
+      end
+      row :email
+      row :uid
+      row :provider
+      row :created_at
+    end
+    panel I18n.t('active_admin.user.show.photos') do 
+      attributes_table_for user do
+        user.photos.each do |photo|
+          row photo.name do
+            image_tag photo.image.thumb.url
+          end
+        end
+      end
+    end
+    
+  end
+
 end
