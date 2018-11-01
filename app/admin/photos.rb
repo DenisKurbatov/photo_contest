@@ -20,8 +20,8 @@ ActiveAdmin.register Photo do
   scope :approved
   scope :moder
 
-
-
+  filter :name, as: :string
+  filter :likes_count, as: :numeric
 
   index do
     column :id
@@ -64,8 +64,6 @@ ActiveAdmin.register Photo do
       state_row :aasm_state
     end
   end
-
-
 
   member_action :approve do
     resource.approve!
