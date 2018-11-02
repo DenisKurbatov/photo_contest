@@ -35,18 +35,18 @@ ActiveAdmin.register Photo do
     end
     state_column :aasm_state
 
-    actions dropdown: true, defaults: false do |p|
-      if p.aasm_state == 'moder'
-        item I18n.t(:approve), approve_admin_photo_path(p)
-        item I18n.t(:ban), ban_admin_photo_path(p)
-        item I18n.t(:remove), remove_admin_photo_path(p)
+    actions dropdown: true, defaults: false do |photo|
+      if photo.moder?
+        item I18n.t(:approve), approve_admin_photo_path(photo)
+        item I18n.t(:ban), ban_admin_photo_path(photo)
+        item I18n.t(:remove), remove_admin_photo_path(photo)
       end
-      item I18n.t(:remove), remove_admin_photo_path(p) if p.aasm_state == 'approved'
-      if p.aasm_state == 'banned'
-        item I18n.t(:approve), approve_admin_photo_path(p)
-        item I18n.t(:remove), remove_admin_photo_path(p)
+      item I18n.t(:remove), remove_admin_photo_path(p) if photo.approved?
+      if photo.banned?
+        item I18n.t(:approve), approve_admin_photo_path(photo)
+        item I18n.t(:remove), remove_admin_photo_path(photo)
       end
-      item I18n.t(:cancel_remove), cancel_remove_admin_photo_path(p) if p.aasm_state == 'removed'
+      item I18n.t(:cancel_remove), cancel_remove_admin_photo_path(photo) if photo.removed?
     end
   end
 

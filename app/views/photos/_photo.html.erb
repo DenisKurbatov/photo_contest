@@ -1,5 +1,5 @@
 <div class="col-md-3 img" >
-  <%= image_tag(photo.image.thumb.url, alt: "Photo") %>
+  <%= image_tag(photo.image.thumb_url, alt: "Photo") %>
   <div class = "overlay"></div>
   <div class="title"><%= link_to(photo.name, photo_path(photo), method: :get )%></div>
   

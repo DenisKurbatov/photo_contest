@@ -20,18 +20,19 @@ class Photo < ApplicationRecord
   include AASM
   delegate :name, to: :user, allow_nil: true, prefix: :author
   delegate :url, to: :user, allow_nil: true, prefix: :author
+
   mount_uploader :image, PhotoUploader
+
   belongs_to :user
   has_many :likes, dependent: :destroy
   has_many :comments, as: :comment_parent, dependent: :destroy
 
-  validates :name, presence: true
-  validates :image, presence: true
+  validates :name, :image, presence: true
 
   scope :by_user, ->(user_id) { where(user_id: user_id) }
-  scope :banned, -> { where(aasm_state: :banned) }
-  scope :approved, -> { where(aasm_state: :approved) }
-  scope :moder, -> { where(aasm_state: :moder) }
+ # scope :banned, -> { where(aasm_state: :banned) }
+ # scope :approved, -> { where(aasm_state: :approved) }
+  #scope :moder, -> { where(aasm_state: :moder) }
 
   paginates_per 8
 
