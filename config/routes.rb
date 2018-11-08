@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   resources :user, only: :none do
     resources :photos, only: :index, module: :users
   end
+
+  
+  get 'users/:id', to: 'user#show', as: 'users'
  
   get 'photos/:photo_id/:comment_parent_type/:comment_parent_id/comments/new', to: 'comments#new',
                                                                                as: 'new_user_photo_comment_comments'
