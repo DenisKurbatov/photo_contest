@@ -4,9 +4,7 @@ class RemovePhotoWorker
 
   def perform(photo_id)
     photo = Photo.find(photo_id)
-    if photo.removed?
-      PastState.remove_member(photo_id)
-      photo.destroy
-    end
+    return unless photo.removed?
+    photo.destroy
   end
 end

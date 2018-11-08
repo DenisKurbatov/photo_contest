@@ -17,7 +17,9 @@
 #
 
 class Photo < ApplicationRecord
+  has_paper_trail
   include AASM
+
   delegate :name, to: :user, allow_nil: true, prefix: :author
   delegate :url, to: :user, allow_nil: true, prefix: :author
 
@@ -30,55 +32,41 @@ class Photo < ApplicationRecord
   validates :name, :image, presence: true
 
   scope :by_user, ->(user_id) { where(user_id: user_id) }
- # scope :banned, -> { where(aasm_state: :banned) }
- # scope :approved, -> { where(aasm_state: :approved) }
-  #scope :moder, -> { where(aasm_state: :moder) }
 
   paginates_per 8
 
-  aasm do
+  aasm column: :status do
     state :moder, initial: true
     state :approved
     state :banned
     state :removed
 
     event :approve do
-      transitions from: %i[moder banned], to: :approved
+      transitions from: %i[moder banned removed], to: :approved
     end
 
     event :ban do
-      transitions from: :moder, to: :banned
+      transitions from: %i[moder removed], to: :banned
     end
 
-    event :remove, before_transaction: :past_state_save do
-      transitions from: %i[moder approved banned], to: :removed
+    event :remove, after_transaction: :remove_photo_worker  do
+      transitions from: %i[moder approved banned removed], to: :removed
     end
-
-    event :cancel_remove, before_transaction: :past_state do
-      transitions from: :removed, to: :approved, guard: :approved?
-      transitions from: :removed, to: :banned, guard: :banned?
-      transitions from: :removed, to: :moder, guard: :moder?
+    event :moder do
+      transitions from: :removed, to: :moder
     end
+    
   end
-  def past_state_save
-    PastState.rank_member(id.to_s, 1, { past_state: aasm.current_state }.to_json)
+  def comments_count(comment_parent = self)
+    count = comment_parent.comments.count
+    return 0 if count ==0 
+    comment_parent.comments.each do |comment|
+      count += comments_count(comment)
+    end
+    count
+  end
+
+  def remove_photo_worker
     RemovePhotoWorker.perform_in(2.minutes, id)
-  end
-
-  def past_state
-    @past_state = JSON.parse(PastState.member_data_for(id))['past_state'].to_sym
-    PastState.remove_member(id)
-  end
-
-  def moder?
-    @past_state == :moder
-  end
-
-  def banned?
-    @past_state == :banned
-  end
-
-  def approved?
-    @past_state == :approved
   end
 end

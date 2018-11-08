@@ -30,23 +30,29 @@ ActiveAdmin.register Photo do
       link_to(image_tag(photo.image.thumb.url), admin_photo_path(photo.id))
     end
     column :likes_count
+    column :comments_count do |photo|
+      photo.comments_count
+    end
     column :author do |photo|
       link_to photo.author_name, admin_user_path(photo.user_id)
     end
-    state_column :aasm_state
+    state_column :status
 
     actions dropdown: true, defaults: false do |photo|
-      if photo.moder?
+      if (photo.removed? || photo.approved?)
+        if photo.removed?
+          item I18n.t(:cancel_remove), cancel_remove_admin_photo_path(photo)
+        else
+          item I18n.t(:remove), remove_admin_photo_path(photo)
+        end
+      elsif photo.banned?
+        item I18n.t(:approve), approve_admin_photo_path(photo)
+        item I18n.t(:remove), remove_admin_photo_path(photo)
+      else
         item I18n.t(:approve), approve_admin_photo_path(photo)
         item I18n.t(:ban), ban_admin_photo_path(photo)
         item I18n.t(:remove), remove_admin_photo_path(photo)
       end
-      item I18n.t(:remove), remove_admin_photo_path(p) if photo.approved?
-      if photo.banned?
-        item I18n.t(:approve), approve_admin_photo_path(photo)
-        item I18n.t(:remove), remove_admin_photo_path(photo)
-      end
-      item I18n.t(:cancel_remove), cancel_remove_admin_photo_path(photo) if photo.removed?
     end
   end
 
@@ -56,13 +62,28 @@ ActiveAdmin.register Photo do
         image_tag photo.image.thumb.url
       end
       row :likes_count
+      row :comments_count do |photo|
+        photo.comments_count
+      end
       row :author do |photo|
         link_to photo.author_name, admin_user_path(photo.user_id)
       end
       row :name
       row :created_at
-      state_row :aasm_state
+      state_row :status
     end
+
+
+    panel I18n.t('active_admin.photo.show.comments') do 
+      table_for photo.comments do
+        column :author_name
+        column :body
+        column :created_at
+      end
+    end
+
+    
+      
   end
 
   member_action :approve do
@@ -78,7 +99,11 @@ ActiveAdmin.register Photo do
     redirect_to admin_photos_path
   end
   member_action :cancel_remove do
-    resource.cancel_remove!
+    resource.approve! if resource.versions.last.reify.approved?
+    resource.ban! if resource.versions.last.reify.banned?
+    resource.moder! if resource.versions.last.reify.moder?
+
     redirect_to admin_photos_path
+
   end
 end

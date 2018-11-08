@@ -6,22 +6,27 @@ ruby '2.4.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'devise'
 
+gem 'active_model_serializers'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
 gem 'omniauth-vkontakte'
 
 gem 'aasm'
+
 gem 'activeadmin'
 gem 'bootstrap-glyphicons'
 gem 'bootstrap-sass'
 gem 'figaro'
 gem 'kaminari'
 gem 'rails', '~> 5.2.0'
-
 gem 'carrierwave-aws'
 gem 'dalli'
 gem 'fog-aws'
 gem 'rubocop'
+
+gem 'paper_trail'
+
+
 
 
 gem 'aws-sdk-rails'

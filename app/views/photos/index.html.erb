@@ -1,9 +1,10 @@
 <% provide(:title, "Галерея") %>
 <h1> Галерея фотоконкурса</h1>
-<form action="/photos" method="get">
-  <input name="search" placeholder="Искать здесь..." type="search">
-  <button type="submit">Поиск</button>
-</form>
+
+<%= form_tag(photos_path, :method => "get", remote: true) do %>
+    <%= text_field_tag :search, params[:search], name: "search", type: "search", placeholder: "Искать здесь..." %>
+    <%= submit_tag "Поиск", :name => nil %>
+<% end %>
 
 <div class="row sort">
   <span class="">Сортировать по:</span>

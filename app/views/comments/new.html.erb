@@ -4,7 +4,7 @@
   <% photo = Photo.find(params[:photo_id]) %>
   <% @comments = Comment.get_comments("Photo", params[:comment_parent_id])%>
   
-  <%= image_tag(photo.image.full_url, alt: "Photo", size: "1000x700", class: "center-block") %>
+  <%= image_tag(photo.image.full.url, alt: "Photo", size: "1000x700", class: "center-block") %>
   <div class="row center-block">
     <%=form_for(@comment, url: user_photo_comment_comments_path, method: :post ) do |f| %>
       <%=f.text_area :body, class: "col-md-9" %>

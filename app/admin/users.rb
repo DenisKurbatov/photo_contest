@@ -15,9 +15,6 @@ ActiveAdmin.register User do
 
   actions :index, :show
   filter :name_or_uid, as: :string
-  
-
-  
   index do
     column :id
     column :uid
@@ -29,7 +26,6 @@ ActiveAdmin.register User do
     end
     column :photos_count do |user|
       link_to user.photos.count, admin_photos_path(q: { user_id_eq: user.id })
-     
     end
     column :all_likes_count do |user|
       count = 0
@@ -41,7 +37,7 @@ ActiveAdmin.register User do
   show do
     attributes_table do
       row :photo do |user|
-        image_tag user.image, size: "100x100"
+        image_tag user.image, size: '100x100'
       end
       row :name do |user|
         link_to user.name, user.url
@@ -51,16 +47,15 @@ ActiveAdmin.register User do
       row :provider
       row :created_at
     end
-    panel I18n.t('active_admin.user.show.photos') do 
-      attributes_table_for user do
-        user.photos.each do |photo|
-          row photo.name do
-            image_tag photo.image.thumb.url
-          end
-        end
+
+    panel I18n.t('active_admin.user.show.photos'), as: :grid do
+
+         user.photos.each do |photo|
+         span link_to(image_tag(photo.image.thumb.url), admin_photo_path(photo.id))
+
+
       end
-    end
-    
-  end
+    end   
+  end 
 
 end
