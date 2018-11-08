@@ -1,4 +1,5 @@
 class Api::PhotosController < ApplicationController
+  
   layout false
 
   def index
@@ -15,6 +16,5 @@ class Api::PhotosController < ApplicationController
     @photos = Photo.by_user(params[:id])
     render json: @photos
   end
-
 
 end

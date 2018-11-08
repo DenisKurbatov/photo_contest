@@ -29,6 +29,6 @@ Rails.application.routes.draw do
   post 'photos/:photo_id/:comment_parent_type/:comment_parent_id/comments', to: 'comments#create',
                                                                             as: 'user_photo_comment_comments'
   delete 'photos/:photo_id', to: 'photos#destroy'
-  get '/admin/photos/:user_id', to: 'admin/photos#index_user', as: 'admin_photos_user' 
+  get '/admin/photos/:id', to: 'admin/photos#show', as: 'admin_photos_user' 
   ActiveAdmin.routes(self)
 end
