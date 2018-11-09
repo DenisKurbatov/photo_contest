@@ -99,9 +99,10 @@ ActiveAdmin.register Photo do
     redirect_to admin_photos_path
   end
   member_action :cancel_remove do
-    resource.approve! if resource.versions.last.reify.approved?
-    resource.ban! if resource.versions.last.reify.banned?
-    resource.moder! if resource.versions.last.reify.moder?
+    # resource.approve! if resource.versions.last.reify.approved?
+    # resource.ban! if resource.versions.last.reify.banned?
+    # resource.moder! if resource.versions.last.reify.moder?
+    resource.update(status: resource.versions.last.reify.status)
 
     redirect_to admin_photos_path
 

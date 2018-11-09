@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'sessions' }
   devise_for :admin_users, ActiveAdmin::Devise.config
 
-  namespace :api, defaults: {format: :json} do
+  namespace :api, defaults: { format: :json } do
     get 'photos', to: 'photos#index'
     get 'photos/:id', to: 'photos#show'
     get 'users', to: 'users#index'
@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 
   
   get 'users/:id', to: 'users#show', as: 'users'
+  post 'users/:id', to: 'users#update'
  
   get 'photos/:photo_id/:comment_parent_type/:comment_parent_id/comments/new', to: 'comments#new',
                                                                                as: 'new_user_photo_comment_comments'

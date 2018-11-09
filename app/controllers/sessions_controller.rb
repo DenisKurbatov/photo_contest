@@ -1,4 +1,7 @@
 class SessionsController < Devise::OmniauthCallbacksController
+
+  
+
   def vkontakte
     create
   end
@@ -17,6 +20,7 @@ class SessionsController < Devise::OmniauthCallbacksController
 
   def create
     @user = User.from_omniauth(request.env['omniauth.auth'])
+    @user.update_access_token
     session[:user_id] = @user.id if @user.persisted?
     redirect_to root_path
   end
