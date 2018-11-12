@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     get 'photos', to: 'photos#index'
     get 'photos/:id', to: 'photos#show'
     get 'users', to: 'users#index'
+    post 'photos/:id/like', to: 'likes#create'
+    delete 'photos/:id/like', to: 'likes#destroy'
     get 'user/:id/photos', to: 'photos#show_photos'
   end
 
