@@ -17,7 +17,7 @@
 #
 
 class Photo < ApplicationRecord
-  has_paper_trail
+  has_paper_trail only: [:status], on: :update
   include AASM
 
   delegate :name, to: :user, allow_nil: true, prefix: :author
