@@ -43,8 +43,10 @@
   </div>
 
   <div class="col-md-2">
+  <% if current_user %>
     <%= link_to(raw("<button class='btn btn-primary pull-right'>Комментировать</button>"), 
           new_user_photo_comment_comments_path(@photo, comment_parent_type: :photo, comment_parent_id: @photo.id) )%>
+  <% end %>
   </div>
 
 </div>
