@@ -2,7 +2,7 @@ module Api
   class LikesController < ApiController
 
     def create
-      @photo = Photo.find(params[:id])
+      @photo = Photo.find(params[:photo_id])
       @user = User.find_by(access_token: request.headers[:token])
       
       if @photo.user_id == @user.id
@@ -17,7 +17,7 @@ module Api
     end
 
     def destroy
-      @photo = Photo.find(params[:id])
+      @photo = Photo.find(params[:photo_id])
       @user = User.find_by(access_token: request.headers[:token])
       @like = Like.find_by(user_id: @user.id, photo_id: @photo.id)
       if @photo.user_id == @user.id
