@@ -2,21 +2,21 @@ class PhotosController < ApplicationController
   before_action :take_photo, only: %i[show destroy]
 
   def new
-    @photo = Photo.new
+    @photo = CreatePhoto.new
   end
 
   def create
-    @photo = current_user.photos.new(photo_params)
-    if @photo.save
-      redirect_to photos_path
+    outcome = CreatePhoto.run(photo_params)
+    if outcome.valid?
+      redirect_to user_photos_path(current_user)
     else
-      redirect_to new_photo_path
+      @photo = outcome
+      render(:new)
     end
   end
 
   def index
-    @photos = Photo.approved.page(params[:page])
-    @photos = @photos.reorder("#{sort_column} #{sort_direction}")
+    @photos = ListPhotos.run!(sorting: "#{sort_column} #{sort_direction}").page(params[:page])  
     @photos = @photos.where("name ILIKE '%#{params[:search]}%'") if params[:search].present?
     respond_to do |format|
       format.html
@@ -27,7 +27,7 @@ class PhotosController < ApplicationController
   def show; end
 
   def destroy
-    @photo.destroy
+    DestroyPhoto.run!(photo: Photo.find(params[:id]))
     redirect_to user_photos_path(current_user)
   end
 
@@ -42,7 +42,7 @@ class PhotosController < ApplicationController
   end
 
   def photo_params
-    params.require(:photo).permit(:name, :image)
+    params.require(:photo).permit(:name, :image).merge(user: current_user)
   end
 
   def take_photo

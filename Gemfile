@@ -6,6 +6,8 @@ ruby '2.4.1'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'devise'
 
+gem 'active_interaction', '~> 3.6'
+
 gem 'active_model_serializers'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
