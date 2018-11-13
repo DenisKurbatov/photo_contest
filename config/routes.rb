@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   root 'photos#index'
 
   namespace :api, defaults: { format: :json } do
-    resources :photos, only: %i[index show] do
+    resources :photos, only: %i[index show create destroy] do
       resources :likes, only: %i[create destroy]
     end
     get 'users', to: 'users#index'
