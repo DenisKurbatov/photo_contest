@@ -21,6 +21,12 @@ class User < ApplicationRecord
   has_many :photos, dependent: :destroy
   has_many :likes, dependent: :destroy
 
+  def self.update_access_token
+    access_token = SecureRandom.urlsafe_base64(32)
+    generate_access_token if User.exists?(access_token: access_token)
+    access_token
+  end
+  
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.name = auth.info.name

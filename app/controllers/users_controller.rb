@@ -11,7 +11,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find(params[:id])
-    @user.update(access_token: update_access_token)
+    @user.update(access_token: User.update_access_token)
     respond_to do |format|
       format.js
     end
@@ -21,11 +21,5 @@ class UsersController < ApplicationController
 
   def auth_user
     redirect_to root_path unless current_user
-  end
-
-  def update_access_token
-    access_token = SecureRandom.urlsafe_base64(32)
-    generate_access_token if User.exists?(access_token: access_token)
-    access_token
   end
 end

@@ -17,7 +17,7 @@ class SessionsController < Devise::OmniauthCallbacksController
 
   def create
     @user = User.from_omniauth(request.env['omniauth.auth'])
-    @user.update(access_token: update_access_token)
+    @user.update(access_token: User.update_access_token)
     session[:user_id] = @user.id if @user.persisted?
     redirect_to root_path
   end
