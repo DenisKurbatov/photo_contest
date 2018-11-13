@@ -5,11 +5,10 @@ module Api
       user = User.find_by(access_token: request.headers[:token])
       photo = user.photos.new(name: request[:photo_name], image: request[:image])
       if photo.save
-        result = "Photo uploaded"
+        render json: { message: "Photo uploaded" }, status: 201
       else
-        result = "Photo don`t uploaded"
+        render json: { message: "Photo don`t uploaded" }, status: 422
       end
-      render json: { message: result }
     end
 
     def destroy
@@ -17,12 +16,10 @@ module Api
       photo = Photo.find(params[:id])
       if user.id == photo.user_id
         photo.destroy
-        result = "Photo was removed"
-        
+        render json: { message: "Photo was removed" }, status: 200
       else
-        result = "You can`t remove this photo"
+        render json: { message: "Photo not was removed" }, status: 200
       end
-      render json: { message: result }
     end
     
 
@@ -42,7 +39,7 @@ module Api
         @photos = Photo.by_user(params[:id])
         render json: @photos, status: 200
       else
-        render json: {message: "Incorrect access token"}
+        render json: { message: "Incorrect access token" }, status: 403
       end
 
     end

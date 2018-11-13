@@ -6,14 +6,14 @@ module Api
       @user = User.find_by(access_token: request.headers[:token])
       
       if @photo.user_id == @user.id
-        result = "Can not like your photo"
+        render json: { message: "You don`t like your photo" }, status: 403
       elsif Like.find_by(user_id: @user.id, photo_id: @photo.id)
-        result = "Like already exists"
+        render json: { message: "Like alredy exist" }, status: 409
       else
         Like.create(photo: @photo, user: @user)
-        result = "Like created!"
+        render json: { message: "Like created!" }, status: 201
       end
-      render json: {message: result}
+      
     end
 
     def destroy
@@ -21,15 +21,13 @@ module Api
       @user = User.find_by(access_token: request.headers[:token])
       @like = Like.find_by(user_id: @user.id, photo_id: @photo.id)
       if @photo.user_id == @user.id
-        result = "It`s your photo!"
+        render json: { message: "It`s your photo!" }, status: 403
       elsif @like
         @like.destroy!
-        result = "Like deleted!"
+        render json: { message: "Like deleted!" }, status: 200
       else
-        result = "Like don`t exist!"
-      end
-      render json: {message: result}
-        
+        render json: { message: "Like don`t exist" }, status: 404
+      end      
     end
   end
 end

@@ -3,14 +3,12 @@ module Api
     def create
       @user = User.find_by(access_token: request.headers[:token])
       @photo = Photo.find(params[:id])
-      body = request.headers[:body]
-      @comment = @photo.comments.new(user_id: @user.id, body: body)
+      @comment = @photo.comments.new(user_id: @user.id, body: request[:body])
       if @comment.save
-        result = "Comment created!"
+        render json: { message: "Comment was created!" }, status: 201
       else
-        result = "Comment not created!"
+        render json: { message: "Comment don`t created!" }, status: 422
       end
-      render json: {message: result}
     end
   end
 end
