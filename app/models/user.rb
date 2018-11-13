@@ -26,7 +26,7 @@ class User < ApplicationRecord
     generate_access_token if User.exists?(access_token: access_token)
     access_token
   end
-  
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.name = auth.info.name

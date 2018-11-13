@@ -22,7 +22,7 @@ module Api
     end
 
     def index
-      @photos = Photo.approved.page(params[:page])
+      @photos = Photo.approved
       render json: @photos, status: 200
     end
 
