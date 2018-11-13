@@ -9,10 +9,8 @@ class CreatePhoto < ActiveInteraction::Base
 
   def execute
     photo = Photo.new(inputs)
-    unless photo.save!
-      errors.merge!(photo.errors)
-    end
+    errors.merge!(photo.errors) unless photo.save!
+
     photo
   end
-
 end

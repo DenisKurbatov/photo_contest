@@ -73,17 +73,13 @@ ActiveAdmin.register Photo do
       state_row :status
     end
 
-
-    panel I18n.t('active_admin.photo.show.comments') do 
+    panel I18n.t('active_admin.photo.show.comments') do
       table_for photo.comments do
         column :author_name
         column :body
         column :created_at
       end
     end
-
-    
-      
   end
 
   member_action :approve do
@@ -99,12 +95,7 @@ ActiveAdmin.register Photo do
     redirect_to admin_photos_path
   end
   member_action :cancel_remove do
-    # resource.approve! if resource.versions.last.reify.approved?
-    # resource.ban! if resource.versions.last.reify.banned?
-    # resource.moder! if resource.versions.last.reify.moder?
     resource.update(status: resource.versions.last.reify.status)
-
     redirect_to admin_photos_path
-
   end
 end

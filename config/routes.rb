@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       resources :likes, only: %i[create destroy]
     end
     get 'users', to: 'users#index'
-    get 'user/:id/photos', to: 'photos#show_photos'
+    get 'users/:id/photos', to: 'photos#show_photos'
     post '/photos/:id/comments/create', to: 'comments#create'
   end
 
@@ -29,6 +29,6 @@ Rails.application.routes.draw do
   post 'photos/:photo_id/:comment_parent_type/:comment_parent_id/comments', to: 'comments#create',
                                                                             as: 'user_photo_comment_comments'
 
-  get '/admin/photos/:id', to: 'admin/photos#show', as: 'admin_photos_user' 
+  get '/admin/photos/:id', to: 'admin/photos#show', as: 'admin_photos_user'
   ActiveAdmin.routes(self)
 end

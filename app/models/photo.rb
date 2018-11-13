@@ -49,17 +49,17 @@ class Photo < ApplicationRecord
       transitions from: %i[moder removed], to: :banned
     end
 
-    event :remove, after_transaction: :remove_photo_worker  do
+    event :remove, after_transaction: :remove_photo_worker do
       transitions from: %i[moder approved banned removed], to: :removed
     end
     event :moder do
       transitions from: :removed, to: :moder
     end
-    
   end
   def comments_count(comment_parent = self)
     count = comment_parent.comments.count
-    return 0 if count ==0 
+    return 0 if count.zero?
+
     comment_parent.comments.each do |comment|
       count += comments_count(comment)
     end

@@ -1,5 +1,4 @@
 class SessionsController < Devise::OmniauthCallbacksController
-
   def vkontakte
     create
   end

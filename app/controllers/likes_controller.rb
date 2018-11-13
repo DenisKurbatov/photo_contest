@@ -1,12 +1,12 @@
 class LikesController < ApplicationController
   def create
     @photo = Photo.find(params[:photo_id])
-    @like = Like.new(photo: @photo, user: current_user)
+    outcome = CreateLike.run(user_id: current_user.id, photo_id: @photo.id)
     respond_to do |format|
-      if @like.save
+      if outcome.valid?
         format.html { redirect_to @photo }
         format.json do
-          render json: { photo_id: @photo.id, likes_count: @photo.likes_count, like_id: @like.id }
+          render json: { photo_id: @photo.id, likes_count: @photo.likes_count + 1, like_id: outcome.result.id }
         end
       end
     end
@@ -14,13 +14,12 @@ class LikesController < ApplicationController
 
   def destroy
     @photo = Photo.find(params[:photo_id])
-    @like = Like.find_by(photo: @photo, user: current_user)
+    @like = Like.find_by(user_id: current_user.id, photo_id: @photo.id)
+    DestroyLike.run(like: @like)
     respond_to do |format|
-      if @like.destroy
-        format.json do
-          render json: { photo_id: @photo.id, likes_count: @photo.likes_count - 1 }
-        end
-        format.html { redirect_to @photo }
+      format.html { redirect_to @photo }
+      format.json do
+        render json: { photo_id: @photo.id, likes_count: @photo.likes_count - 1 }
       end
     end
   end

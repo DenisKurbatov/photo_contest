@@ -49,13 +49,9 @@ ActiveAdmin.register User do
     end
 
     panel I18n.t('active_admin.user.show.photos'), as: :grid do
-
-         user.photos.each do |photo|
-         span link_to(image_tag(photo.image.thumb.url), admin_photo_path(photo.id))
-
-
+      user.photos.each do |photo|
+        span link_to(image_tag(photo.image.thumb.url), admin_photo_path(photo.id))
       end
-    end   
-  end 
-
+    end
+  end
 end

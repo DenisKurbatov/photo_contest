@@ -1,2 +1,4 @@
-module Api::PhotosHelper
+module Api
+  module PhotosHelper
+  end
 end

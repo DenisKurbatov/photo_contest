@@ -1,13 +1,12 @@
 module Api
   class PhotosController < ApiController
-
     def create
       user = User.find_by(access_token: request.headers[:token])
       photo = user.photos.new(name: request[:photo_name], image: request[:image])
       if photo.save
-        render json: { message: "Photo uploaded" }, status: 201
+        render json: { message: 'Photo uploaded', photo_id: photo.id }, status: 201
       else
-        render json: { message: "Photo don`t uploaded" }, status: 422
+        render json: { message: 'Photo don`t uploaded' }, status: 422
       end
     end
 
@@ -16,12 +15,11 @@ module Api
       photo = Photo.find(params[:id])
       if user.id == photo.user_id
         photo.destroy
-        render json: { message: "Photo was removed" }, status: 200
+        render json: { message: 'Photo was removed' }, status: 200
       else
-        render json: { message: "Photo not was removed" }, status: 200
+        render json: { message: 'Photo not was removed' }, status: 200
       end
     end
-    
 
     def index
       @photos = Photo.approved.page(params[:page])
@@ -39,9 +37,8 @@ module Api
         @photos = Photo.by_user(params[:id])
         render json: @photos, status: 200
       else
-        render json: { message: "Incorrect access token" }, status: 403
+        render json: { message: 'Incorrect access token' }, status: 403
       end
-
     end
   end
 end

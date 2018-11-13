@@ -16,7 +16,7 @@ class PhotosController < ApplicationController
   end
 
   def index
-    @photos = ListPhotos.run!(sorting: "#{sort_column} #{sort_direction}").page(params[:page])  
+    @photos = ListPhotos.run!(sorting: "#{sort_column} #{sort_direction}").page(params[:page])
     @photos = @photos.where("name ILIKE '%#{params[:search]}%'") if params[:search].present?
     respond_to do |format|
       format.html
