@@ -23,7 +23,8 @@ module Api
 
     def index
       @photos = Photo.select(:id, :name, :image, :user_id, :likes_count, :comments_count, :all_comments_count).approved.includes(:comments)
-      render json: @photos, root: :photos
+      @photos = @photos.page(params[:page].blank? ? 1 : params[:page][:number])
+      render json: @photos, adapter: :json_api
     end
 
     def show
