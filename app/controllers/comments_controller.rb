@@ -12,6 +12,7 @@ class CommentsController < ApplicationController
       @comment = comment_parent.comments.new(user_id: current_user.id, body: params[:comment][:body])
     end
     if @comment.save
+      photo.update(all_comments_count: photo.all_comments_count+1)
       redirect_to photo_path(photo)
     else
       redirect_to new_user_photo_comment_comments_path

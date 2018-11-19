@@ -14,11 +14,11 @@ module Api
     end
 
     def destroy
-      @like = Like.find_by(user_id: @user.id, photo_id: @photo.id)
+      like = Like.find_by(user_id: @user.id, photo_id: @photo.id)
       if @photo.user_id == @user.id
         render json: { message: 'It`s your photo!' }, status: 403
-      elsif @like
-        @like.destroy!
+      elsif like
+        like.destroy!
         render json: { message: 'Like deleted!' }, status: 200
       else
         render json: { message: 'Like don`t exist' }, status: 404

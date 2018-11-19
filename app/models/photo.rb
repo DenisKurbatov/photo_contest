@@ -56,15 +56,6 @@ class Photo < ApplicationRecord
       transitions from: :removed, to: :moder
     end
   end
-  def comments_count(comment_parent = self)
-    count = comment_parent.comments.count
-    return 0 if count.zero?
-
-    comment_parent.comments.each do |comment|
-      count += comments_count(comment)
-    end
-    count
-  end
 
   def remove_photo_worker
     RemovePhotoWorker.perform_in(2.minutes, id)
