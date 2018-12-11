@@ -3,7 +3,7 @@ module Api
     before_action :define_photo_and_user
 
     def create
-      if @photo.user_id == @user.id
+      if photo.user_id == @user.id
         render json: { message: 'You don`t like your photo' }, status: 403
       elsif Like.find_by(user_id: @user.id, photo_id: @photo.id)
         render json: { message: 'Like alredy exist' }, status: 409
@@ -15,7 +15,7 @@ module Api
 
     def destroy
       like = Like.find_by(user_id: @user.id, photo_id: @photo.id)
-      if @photo.user_id == @user.id
+      if photo.user_id == @user.id
         render json: { message: 'It`s your photo!' }, status: 403
       elsif like
         like.destroy!
@@ -30,6 +30,10 @@ module Api
     def define_photo_and_user
       @photo = Photo.find(params[:photo_id])
       @user = User.find_by(access_token: request.headers[:token])
+    end
+
+    def photo
+      @photo ||= Photo.find(params[:photo_id])
     end
   end
 end

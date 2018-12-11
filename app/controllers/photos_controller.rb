@@ -24,9 +24,7 @@ class PhotosController < ApplicationController
     end
   end
 
-  def show
-    
-  end
+  def show; end
 
   def destroy
     DestroyPhoto.run!(photo: Photo.find(params[:id]))

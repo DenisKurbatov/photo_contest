@@ -4,18 +4,18 @@ class CommentsController < ApplicationController
   end
 
   def create
-    photo = Photo.find(params[:photo_id])
-    if params[:comment_parent_type] == 'photo'
-      @comment = photo.comments.new(user_id: current_user.id, body: params[:comment][:body])
-    else
-      comment_parent = Comment.find(params[:comment_parent_id])
-      @comment = comment_parent.comments.new(user_id: current_user.id, body: params[:comment][:body])
-    end
-    if @comment.save
-      photo.update(all_comments_count: photo.all_comments_count+1)
-      redirect_to photo_path(photo)
+    outcome = CreateComment.run(comment_params)
+    if outcome.valid?
+      redirect_to photo_path(params[:photo_id])
     else
       redirect_to new_user_photo_comment_comments_path
     end
+  end
+
+  private
+
+  def comment_params
+    { comment_parent_type: params[:comment_parent_type], comment_parent_id: params[:comment_parent_id],
+      user_id: current_user.id, body: params[:comment][:body] }
   end
 end
