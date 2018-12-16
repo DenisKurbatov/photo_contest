@@ -1,7 +1,8 @@
 class DestroyLike < ActiveInteraction::Base
-  object :like
+  integer :like_id
 
   def execute
+    like = Like.find(like_id)
     like.destroy!
   end
 end

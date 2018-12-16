@@ -16,8 +16,7 @@ class PhotosController < ApplicationController
   end
 
   def index
-    @photos = ListPhotos.run!(sorting: "#{sort_column} #{sort_direction}").page(params[:page])
-    @photos = @photos.where("name ILIKE '%#{params[:search]}%'") if params[:search].present?
+    @photos = ListPhotos.run!(sorting: "#{sort_column} #{sort_direction}", search: params[:search]).page(params[:page])
     respond_to do |format|
       format.html
       format.js
@@ -27,7 +26,7 @@ class PhotosController < ApplicationController
   def show; end
 
   def destroy
-    DestroyPhoto.run!(photo: Photo.find(params[:id]))
+    DestroyPhoto.run!(photo: @photo)
     redirect_to user_photos_path(current_user)
   end
 
