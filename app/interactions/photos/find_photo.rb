@@ -1,8 +1,7 @@
 class FindPhoto < ActiveInteraction::Base
-  integer :id 
+  integer :id
 
   def execute
-    photo = Photo.find_by_id(id)
+    photo = Photo.find_by(id)
   end
-
 end

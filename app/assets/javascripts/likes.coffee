@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).ready ->
-  $('.like').on('click', '.add-like', ->
+  $('#gal').on('click', '.add-like', ->
     $.ajax(
       url: "/photos/" + $(this).parent().attr("id") + "/likes",
       type: "POST",
@@ -13,7 +13,10 @@ $(document).ready ->
         $("#" + res.photo_id + " .count-like").replaceWith("<span class='count-like'>" + res.likes_count + "</span>")
     )
   )
-  $('.like').on('click', '.remove-like', ->
+
+
+$(document).ready ->
+  $('#gal').on('click', '.remove-like', ->
     $.ajax(
       url: "/photos/" + $(this).parent().attr("id") + "/likes/" + $(this).attr("data-like-id"),
       type: "POST",

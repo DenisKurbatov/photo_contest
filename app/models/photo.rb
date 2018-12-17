@@ -17,33 +17,21 @@
 #
 
 class Photo < ApplicationRecord
-  has_paper_trail only: [:status], on: :update
   include AASM
-
-  delegate :name, to: :user, allow_nil: true, prefix: :author
-  delegate :url, to: :user, allow_nil: true, prefix: :author
-
+  has_paper_trail only: [:status], on: :update
+  paginates_per 8
   mount_uploader :image, PhotoUploader
 
-
-
-
-
-
-
-
-
-
-  
   belongs_to :user
   has_many :likes, dependent: :destroy
   has_many :comments, as: :comment_parent, dependent: :destroy
 
   validates :name, :image, presence: true
 
-  scope :by_user, ->(user_id) { where(user_id: user_id) }
+  delegate :name, to: :user, allow_nil: true, prefix: :author
+  delegate :url, to: :user, allow_nil: true, prefix: :author
 
-  paginates_per 8
+  scope :by_user, ->(user_id) { where(user_id: user_id) }
 
   aasm column: :status do
     state :moder, initial: true

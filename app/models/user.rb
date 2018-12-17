@@ -17,6 +17,7 @@
 
 class User < ApplicationRecord
   devise :database_authenticatable, :omniauthable, omniauth_providers: %i[vkontakte github]
+
   has_many :comments, dependent: :nullify
   has_many :photos, dependent: :destroy
   has_many :likes, dependent: :destroy
