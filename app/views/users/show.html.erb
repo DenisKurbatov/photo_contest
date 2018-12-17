@@ -1,4 +1,4 @@
-
+<% provide(:title, @user.name) %>
 <h1><%= @user.name %></h1>
 <%= image_tag(@user.image, size: "400x400") %>
 <span class="token"> <%= @user.access_token %> </span>
