@@ -16,7 +16,7 @@ class CommentsController < ApplicationController
   private
 
   def update_all_comment_count
-    new_count = Photo.select(:all_comments_count).find_by(params[:photo_id]).all_comments_count
+    new_count = Photo.find(params[:photo_id]).all_comments_count
     Photo.update(params[:photo_id], all_comments_count: new_count)
   end
 

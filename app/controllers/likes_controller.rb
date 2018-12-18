@@ -10,7 +10,7 @@ class LikesController < ApplicationController
   end
 
   def destroy
-    DestroyLike.run(like_id: params[:id])
+    DestroyLike.run(like_id: params[:id], user_id: current_user.id)
     respond_to do |format|
       format.html { redirect_to photo_path(params[:photo_id]) }
       format.json do

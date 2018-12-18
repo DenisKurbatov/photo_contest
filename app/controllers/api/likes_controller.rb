@@ -3,25 +3,20 @@ module Api
     before_action :define_photo_and_user
 
     def create
-      if photo.user_id == @user.id
-        render json: { message: 'You don`t like your photo' }, status: 403
-      elsif Like.find_by(user_id: @user.id, photo_id: @photo.id)
-        render json: { message: 'Like alredy exist' }, status: 409
+      outcome = CreateLike.run(photo_id: photo.id, user_id: user.id)
+      if outcome.valid?
+        render json: { message: 'Like created!', result: outcome.result }, status: 201
       else
-        like = Like.create(photo: @photo, user: @user)
-        render json: { message: 'Like created!', id: like.id }, status: 201
+        render json: { message: 'Like don`t created!', result: outcome.errors.details }, status: 400
       end
     end
 
     def destroy
-      like = Like.find_by(user_id: @user.id, photo_id: @photo.id)
-      if photo.user_id == @user.id
-        render json: { message: 'It`s your photo!' }, status: 403
-      elsif like
-        like.destroy!
-        render json: { message: 'Like deleted!' }, status: 200
+      outcome = DestroyLike.run(like_id: params[:id], user_id: user.id)
+      if outcome.valid?
+        render json: { message: 'Like deleted', result: outcome.result }, status: 201
       else
-        render json: { message: 'Like don`t exist' }, status: 404
+        render json: { message: 'Like don`t deleted!', result: outcome.errors.details }, status: 400
       end
     end
 
@@ -34,6 +29,10 @@ module Api
 
     def photo
       @photo ||= Photo.find(params[:photo_id])
+    end
+
+    def user
+      @user ||= User.(access_token: request.headers[:token])
     end
   end
 end

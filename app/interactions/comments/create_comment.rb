@@ -1,6 +1,7 @@
 class CreateComment < ActiveInteraction::Base
-  string :comment_parent_type, :comment_parent_id, :body
-  integer :user_id
+  string :comment_parent_type, default: 'photo'
+  string :body
+  integer :user_id, :comment_parent_id
 
   validates :body, presence: true, length: { in: 3..300 }
   def to_model
