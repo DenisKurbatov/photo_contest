@@ -2,6 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+
 $(document).ready ->
   $('#gal').on('click', '.add-like', ->
     $.ajax(
@@ -13,7 +14,6 @@ $(document).ready ->
         $("#" + res.photo_id + " .count-like").replaceWith("<span class='count-like'>" + res.likes_count + "</span>")
     )
   )
-
 
 $(document).ready ->
   $('#gal').on('click', '.remove-like', ->
@@ -28,3 +28,4 @@ $(document).ready ->
         $("#" + res.photo_id + " .count-like").replaceWith("<span class='count-like'>" + res.likes_count + "</span>")
     )
   )
+
