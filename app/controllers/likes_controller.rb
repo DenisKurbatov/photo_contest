@@ -5,7 +5,7 @@ class LikesController < ApplicationController
       format.html { redirect_to photo_path(params[:photo_id]) }
       format.json do
         render json: { photo_id: params[:photo_id],
-                       ikes_count: Photo.find(params[:photo_id]).likes_count,
+                       likes_count: Photo.find(params[:photo_id]).likes_count,
                        like_id: outcome.result.id }
       end
     end
