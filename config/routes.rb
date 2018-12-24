@@ -9,7 +9,9 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     resources :photos, only: %i[index show create destroy] do
-      resources :likes, only: %i[create destroy]
+      # resources :likes, only: %i[create destroy]
+      post 'likes', to: 'likes#create'
+      delete 'likes', to: 'likes#destroy'
     end
     get 'users', to: 'users#index'
     get 'users/:id/photos', to: 'photos#show_photos'

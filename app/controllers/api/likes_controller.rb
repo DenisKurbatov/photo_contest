@@ -3,7 +3,7 @@ module Api
     before_action :define_photo_and_user
 
     def create
-      outcome = CreateLike.run(photo_id: photo.id, user_id: user.id)
+      outcome = Likes::Create.run(user_id: get_user_id_by_access_token, photo_id: params[:photo_id].to_i)
       if outcome.valid?
         render json: { message: 'Like created!', result: outcome.result }, status: 201
       else
@@ -12,7 +12,7 @@ module Api
     end
 
     def destroy
-      outcome = DestroyLike.run(like_id: params[:id], user_id: user.id)
+      outcome = Likes::Destroy.run(user_id: get_user_id_by_access_token, photo_id: params[:photo_id].to_i)
       if outcome.valid?
         render json: { message: 'Like deleted', result: outcome.result }, status: 201
       else
@@ -23,16 +23,19 @@ module Api
     private
 
     def define_photo_and_user
-      @photo = Photo.find(params[:photo_id])
+      @photo = Photo.find_by(id: params[:photo_id])
       @user = User.find_by(access_token: request.headers[:token])
     end
 
     def photo
-      @photo ||= Photo.find(params[:photo_id])
+      @photo ||= Photo.find_by(params[:photo_id])
     end
 
     def user
-      @user ||= User.(access_token: request.headers[:token])
+      @user ||= User.find_by(access_token: request.headers[:token])
+    end
+    def get_user_id_by_access_token
+      User.select(:id).find_by(access_token: request.headers[:token]).id
     end
   end
 end

@@ -15,7 +15,6 @@ $(document).ready ->
     )
   )
 
-$(document).ready ->
   $('#gal').on('click', '.remove-like', ->
     $.ajax(
       url: "/photos/" + $(this).parent().attr("id") + "/likes/" + $(this).attr("data-like-id"),

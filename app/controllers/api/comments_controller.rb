@@ -1,21 +1,22 @@
 module Api
   class CommentsController < ApiController
-    before_action :define_photo_and_user
-
     def create
-      outcome = CreateComment.run(comment_parent_id: @photo.id, body: request[:content], user_id: @user.id)
+      outcome = Comments::Create.run(comment_params)
       if outcome.valid?
         render json: { message: 'Comment was created!', result: outcome.result }, status: 201
       else
-        render json: { message: 'Comment don`t created!' }, status: 422
+        render json: { message: 'Comment don`t created!', errors: outcome.errors.details }, status: 422
       end
     end
 
     private
 
-    def define_photo_and_user
-      @photo = Photo.find(params[:id])
-      @user = User.find_by(access_token: request.headers[:token])
+    def comment_params
+      { photo_id: params[:id], comment_parent_id: params[:id], user_id: user_id, body: request[:content] }
+    end
+
+    def user_id
+      User.find_by(access_token: request.headers[:token]).id if User.where(access_token: request.headers[:token]).exists?
     end
   end
 end
