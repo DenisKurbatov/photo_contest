@@ -1,45 +1,58 @@
 module Api
   class PhotosController < ApiController
     def create
-      user = User.find_by(access_token: request.headers[:token])
-      photo = user.photos.new(name: request[:photo_name], image: request[:image])
-      if photo.save
-        render json: { message: 'Photo uploaded', photo_id: photo.id }, status: 201
+      outcome = Photos::Create.run(name: request[:photo_name], image: request[:image], user_id: user_id)
+      if outcome.valid?
+        render json: { message: 'Photo uploaded', photo: outcome.result }, status: 201
       else
-        render json: { message: 'Photo don`t uploaded' }, status: 422
+        render json: { message: 'Photo don`t uploaded', errors: outcome.errors.details }, status: 422
       end
     end
 
     def destroy
-      user = User.find_by(access_token: request.headers[:token])
-      photo = Photo.find(params[:id])
-      if user.id == photo.user_id
-        photo.destroy
-        render json: { message: 'Photo was removed' }, status: 200
+      outcome = Photos::Destroy.run(photo_id: params[:id], user_id: user_id)
+      if outcome.valid?
+        render json: { message: 'Photo was removed', photo: outcome.result }, status: 200
       else
-        render json: { message: 'Photo not was removed' }, status: 200
+        render json: { message: 'Photo not was removed', errors: outcome.errors.details }, status: 422
       end
     end
 
     def index
-      @photos = Photo.select(:id, :name, :image, :user_id, :likes_count, :comments_count, :all_comments_count).approved.includes(:comments)
-      @photos = @photos.page(params[:page].blank? ? 1 : params[:page][:number])
-      render json: @photos, adapter: :json_api
+      outcome = Photos::List.run
+      if outcome.valid?
+        @photos = outcome.result.select(:id, :name, :image, :user_id, :likes_count, :comments_count, :all_comments_count).includes(:comments)
+        @photos = @photos.page(params[:page].blank? ? 1 : params[:page][:number])
+        render json: @photos
+      else
+        render json: outcome.errors.details
+      end
     end
 
     def show
-      photo = Photo.find(params[:id])
-      render json: photo, status: 200
+      outcome = Photos::Find.run(photo_id: params[:id])
+      if outcome.valid?
+        photo = outcome.result
+        render json: photo, status: 200
+      else
+        render json: outcome.errors.details, status: 422
+      end
     end
 
     def show_photos
-      user = User.find_by(access_token: request.headers[:token])
-      if user.id == params[:id].to_i
-        @photos = Photo.by_user(params[:id])
-        render json: @photos, status: 200
+      outcome = Photos::List.run(user_id: user_id)
+      if outcome.valid?
+        photos = outcome.result
+        render json: photos, status: 200
       else
-        render json: { message: 'Incorrect access token' }, status: 403
+        render json: outcome.errors.details, status: 422
       end
+    end
+
+    private
+
+    def user_id
+      User.find_by(access_token: request.headers[:token]).id if User.where(access_token: request.headers[:token]).exists?
     end
   end
 end

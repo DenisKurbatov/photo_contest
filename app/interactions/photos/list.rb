@@ -6,7 +6,7 @@ module Photos
 
     def execute
       if user_id
-        photos = Photo.find_by(user_id: user_id)
+        photos = Photo.where(user_id: user_id)
       else
         photos = Photo.approved.order(sorting)
         photos = photos.where("name ILIKE '%#{search}%'") unless search.nil?

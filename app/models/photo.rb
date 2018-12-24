@@ -28,8 +28,7 @@ class Photo < ApplicationRecord
 
   validates :name, :image, presence: true
 
-  delegate :name, to: :user, allow_nil: true, prefix: :author
-  delegate :url, to: :user, allow_nil: true, prefix: :author
+  delegate :name, :url, to: :user, allow_nil: true, prefix: :author
 
   scope :by_user, ->(user_id) { where(user_id: user_id) }
 

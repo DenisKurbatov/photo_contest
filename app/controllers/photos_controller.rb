@@ -1,12 +1,11 @@
 class PhotosController < ApplicationController
-  before_action :take_photo, only: %i[show destroy]
 
   def new
-    @photo = CreatePhoto.new
+    @photo = Photos::Create.new
   end
 
   def create
-    outcome = CreatePhoto.run(photo_params)
+    outcome = Photos::Create.run(photo_params)
     if outcome.valid?
       redirect_to user_photos_path(current_user)
     else
@@ -16,17 +15,29 @@ class PhotosController < ApplicationController
   end
 
   def index
-    @photos = ListPhotos.run!(sorting: "#{sort_column} #{sort_direction}", search: params[:search]).page(params[:page])
+    outcome = Photos::List.run(sorting: "#{sort_column} #{sort_direction}", search: params[:search])
+    if outcome.valid?
+      @photos = outcome.result.page(params[:page])
+    else
+      @photos = []
+    end
     respond_to do |format|
       format.html
       format.js
     end
   end
 
-  def show; end
+  def show
+    outcome = Photos::Find.run(photo_id: params[:id])
+    if outcome.valid?
+      @photo = outcome.result
+    else
+      redirect_to root_path
+    end
+  end
 
   def destroy
-    DestroyPhoto.run!(photo: @photo)
+    Photos::Destroy.run!(photo_id: params[:id], user_id: current_user.id)
     redirect_to user_photos_path(current_user)
   end
 
@@ -41,10 +52,6 @@ class PhotosController < ApplicationController
   end
 
   def photo_params
-    params.require(:photo).permit(:name, :image).merge(user: current_user)
-  end
-
-  def take_photo
-    @photo = Photo.find(params[:id])
+    params.require(:photo).permit(:name, :image).merge(user_id: current_user.id)
   end
 end
