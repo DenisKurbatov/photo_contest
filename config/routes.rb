@@ -9,13 +9,14 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     resources :photos, only: %i[index show create destroy] do
-      # resources :likes, only: %i[create destroy]
+      resources :comments, only: :create
+      #resources :likes, only: %i[create destroy]
       post 'likes', to: 'likes#create'
       delete 'likes', to: 'likes#destroy'
     end
-    get 'users', to: 'users#index'
-    get 'users/:id/photos', to: 'photos#show_photos'
-    post '/photos/:id/comments/create', to: 'comments#create'
+    resources :users, only: :index do
+      resources :photos, only: :index
+    end
   end
 
   resources :photos, only: %i[new create index show destroy] do

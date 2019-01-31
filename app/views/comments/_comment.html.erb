@@ -15,7 +15,7 @@
   <div class="row">
     <div class="col-md-2 pull-right">
       <%=   link_to(raw("<button class='btn btn-primary pull-right'>Комментировать</button>"), 
-          new_user_photo_comment_comments_path(@photo, comment_parent_type: :comment, comment_parent_id: comment.id) )%>
+          new_user_photo_comment_comments_path(@photo, comment_parent_type: 'Comment', comment_parent_id: comment.id) )%>
    
     </div>
   </div>

@@ -4,9 +4,9 @@ class CommentsController < ApplicationController
   end
 
   def create
-    outcome = Comments::Create.run(comment_params)
+    outcome = Comments::Create.run(params.merge(comment_params))
     if outcome.valid?
-      redirect_to photo_path(params[:photo_id])
+      redirect_to photo_path(outcome.photo_id)
     else
       redirect_to new_user_photo_comment_comments_path
     end
@@ -14,9 +14,7 @@ class CommentsController < ApplicationController
 
   private
 
-
   def comment_params
-    { comment_parent_type: params[:comment_parent_type], comment_parent_id: params[:comment_parent_id],
-      user_id: current_user.id, body: params[:comment][:body], photo_id: params[:photo_id] }
+    params.require(:comment).permit(:body).merge(user_id: current_user.id)
   end
 end

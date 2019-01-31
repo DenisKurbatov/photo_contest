@@ -1,7 +1,9 @@
 module Api
   class PhotosController < ApiController
+    skip_before_action :merge_token_to_params, only: :index
+
     def create
-      outcome = Photos::Create.run(name: request[:photo_name], image: request[:image], user_id: user_id)
+      outcome = Photos::Create.run(params)
       if outcome.valid?
         render json: { message: 'Photo uploaded', photo: outcome.result }, status: 201
       else
@@ -10,7 +12,7 @@ module Api
     end
 
     def destroy
-      outcome = Photos::Destroy.run(photo_id: params[:id], user_id: user_id)
+      outcome = Photos::Destroy.run(params)
       if outcome.valid?
         render json: { message: 'Photo was removed', photo: outcome.result }, status: 200
       else
@@ -19,40 +21,23 @@ module Api
     end
 
     def index
-      outcome = Photos::List.run
+      outcome = Photos::List.run(params)
       if outcome.valid?
-        @photos = outcome.result.select(:id, :name, :image, :user_id, :likes_count, :comments_count, :all_comments_count).includes(:comments)
-        @photos = @photos.page(params[:page].blank? ? 1 : params[:page][:number])
-        render json: @photos
+        photos = outcome.result.select(:id, :name, :image, :user_id, :likes_count, :comments_count, :all_comments_count).includes(:comments)
+        photos = photos.page(params[:page] || 1)
+        render json: photos
       else
         render json: outcome.errors.details
       end
     end
 
     def show
-      outcome = Photos::Find.run(photo_id: params[:id])
+      outcome = Photos::Find.run(params)
       if outcome.valid?
-        photo = outcome.result
-        render json: photo, status: 200
+        render json: outcome.result, status: 200
       else
         render json: outcome.errors.details, status: 422
       end
-    end
-
-    def show_photos
-      outcome = Photos::List.run(user_id: user_id)
-      if outcome.valid?
-        photos = outcome.result
-        render json: photos, status: 200
-      else
-        render json: outcome.errors.details, status: 422
-      end
-    end
-
-    private
-
-    def user_id
-      User.find_by(access_token: request.headers[:token]).id if User.where(access_token: request.headers[:token]).exists?
     end
   end
 end

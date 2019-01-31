@@ -1,6 +1,6 @@
 <% provide(:title, 'Новый комментарий') %>
 
-<% if params[:comment_parent_type] == "photo" %>
+<% if params[:comment_parent_type] == "Photo" %>
   <% photo = Photo.find(params[:photo_id]) %>
   <% @comments = Comment.get_comments("Photo", params[:comment_parent_id])%>
   

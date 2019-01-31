@@ -4,6 +4,8 @@ module Photos
     string :search, default: nil
     integer :user_id, default: nil
 
+    validate :user_exists?, if: :user_id?
+
     def execute
       if user_id
         photos = Photo.where(user_id: user_id)
@@ -12,6 +14,12 @@ module Photos
         photos = photos.where("name ILIKE '%#{search}%'") unless search.nil?
       end
       photos
+    end
+
+    private
+
+    def user_exists?
+      errors.add(:user, 'User not exists') unless User.where(id: user_id).exists?
     end
   end
 end

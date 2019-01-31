@@ -1,7 +1,6 @@
 class PhotosController < ApplicationController
-
   def new
-    @photo = Photos::Create.new
+    @photo = Photo.new
   end
 
   def create
@@ -28,7 +27,7 @@ class PhotosController < ApplicationController
   end
 
   def show
-    outcome = Photos::Find.run(photo_id: params[:id])
+    outcome = Photos::Find.run(params)
     if outcome.valid?
       @photo = outcome.result
     else
@@ -37,8 +36,8 @@ class PhotosController < ApplicationController
   end
 
   def destroy
-    Photos::Destroy.run!(photo_id: params[:id], user_id: current_user.id)
-    redirect_to user_photos_path(current_user)
+    outcome = Photos::Destroy.run(params.merge(user_id: current_user.id))
+    redirect_to user_photos_path(outcome.result[:user_id])
   end
 
   private

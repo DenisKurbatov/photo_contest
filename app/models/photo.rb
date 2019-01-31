@@ -28,7 +28,7 @@ class Photo < ApplicationRecord
 
   validates :name, :image, presence: true
 
-  delegate :name, :url, to: :user, allow_nil: true, prefix: :author
+  delegate :name, :url, :email, to: :user, allow_nil: true, prefix: :author
 
   scope :by_user, ->(user_id) { where(user_id: user_id) }
 
@@ -38,7 +38,7 @@ class Photo < ApplicationRecord
     state :banned
     state :removed
 
-    event :approve do
+    event :approve, after_transaction: :send_email_approve do
       transitions from: %i[moder banned removed], to: :approved
     end
 
@@ -56,5 +56,9 @@ class Photo < ApplicationRecord
 
   def remove_photo_worker
     RemovePhotoWorker.perform_in(2.minutes, id)
+  end
+
+  def send_email_approve
+    UserMailer.with(email: author_email, image: image.file.path).photo_approved.deliver_now
   end
 end
