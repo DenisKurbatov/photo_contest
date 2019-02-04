@@ -8,7 +8,7 @@ module Photos
     end
 
     validates :name, :image, presence: true
-    validate :name_uniquenes?
+    validate :check_user, :name_uniquenes?
 
     def execute
       photo = Photo.new(name: name, image: image, user_id: user.id)
@@ -20,10 +20,14 @@ module Photos
 
     def user
       @user ||= if user_id.present?
-                  User.find(user_id)
+                  User.find_by(id: user_id)
                 else
                   User.find_by(access_token: access_token)
                 end
+    end
+
+    def check_user
+      errors.add(:user, 'User not found') unless user
     end
 
     def name_uniquenes?

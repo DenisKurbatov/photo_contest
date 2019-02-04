@@ -27,14 +27,14 @@ module Comments
 
     def user
       @user ||= if user_id.present?
-                  User.find_by(user_id)
+                  User.find_by(id: user_id)
                 else
                   User.find_by(access_token: access_token)
                 end
     end
 
     def photo
-      @photo ||= Photo.find_by(photo_id)
+      @photo ||= Photo.find_by(id: photo_id)
     end
 
     def comment_parent
