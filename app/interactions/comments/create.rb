@@ -7,8 +7,8 @@ module Comments
     integer :user_id, :comment_parent_id, default: nil
 
     validates :body, presence: true, length: { in: 3..300 }
-    validates :photo_id, presence: true
-    validate :valid_photo_exists?
+    validate :check_user, :check_photo, :check_comment_parent
+
 
     def execute
       comment.valid? ? update_all_comments_count : errors.merge!(comment.errors)
@@ -27,14 +27,14 @@ module Comments
 
     def user
       @user ||= if user_id.present?
-                  User.find(user_id)
+                  User.find_by(user_id)
                 else
                   User.find_by(access_token: access_token)
                 end
     end
 
     def photo
-      @photo ||= Photo.find(photo_id)
+      @photo ||= Photo.find_by(photo_id)
     end
 
     def comment_parent
@@ -46,8 +46,16 @@ module Comments
       parent
     end
 
-    def valid_photo_exists?
-      errors.add(:photo, 'Photo not found!') if Photo.where(id: photo_id).blank?
+    def check_user
+      errors.add(:user, 'User not found') unless user
+    end
+
+    def check_photo
+      errors.add(:photo, 'Photo not found') unless photo
+    end
+
+    def check_comment_parent
+      errors.add(:paqrent_comment, 'Comment can`t create') unless comment_parent
     end
   end
 end
