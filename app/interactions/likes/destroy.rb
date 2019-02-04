@@ -4,14 +4,15 @@ module Likes
     string :access_token
 
     validates :photo_id, presence: true
-    validate :validate_like_exists?
+    # validate :validate_like_exists?, if: -> { user }
+    validate :check_user, :check_photo
 
     attr_reader :count
 
-    set_callback :execute, :after, -> { @count = Photo.find_by(id: photo_id).likes_count }
+    set_callback :execute, :after, -> { @count = Photo.find_by(id: photo_id)&.likes_count }
 
     def execute
-      Like.find_by(user_id: user.id, photo_id: photo_id).destroy
+      Like.find_by(user_id: user.id, photo_id: photo_id)&.destroy
     end
 
     private
@@ -20,8 +21,16 @@ module Likes
       @user ||= User.find_by(access_token: access_token)
     end
 
-    def validate_like_exists?
-      errors.add(:like, 'like not found ( you not like this photo)') unless Like.where(user_id: user.id, photo_id: photo_id).exists?
+    def photo
+      @photo ||= Photo.find_by(id: photo_id)
+    end
+
+    def check_user
+      errors.add(:user, 'User not found') unless user
+    end
+
+    def check_photo
+      errors.add(:photo, 'Photo not found') unless photo
     end
   end
 end

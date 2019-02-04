@@ -24,7 +24,7 @@ module Api
       outcome = Photos::List.run(params)
       if outcome.valid?
         photos = outcome.result.select(:id, :name, :image, :user_id, :likes_count, :comments_count, :all_comments_count).includes(:comments)
-        photos = photos.page(params[:page] || 1)
+        photos = photos.page(params[:page])
         render json: photos
       else
         render json: outcome.errors.details

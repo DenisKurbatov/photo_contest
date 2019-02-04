@@ -12,7 +12,7 @@ module Api
     def destroy
       outcome = Likes::Destroy.run(params)
       if outcome.valid?
-        render json: { message: 'Like deleted', like: outcome.result }, status: 201
+        head 204
       else
         render json: { message: 'Like don`t deleted!', errors: outcome.errors.details }, status: 400
       end
