@@ -3,9 +3,9 @@ module Api
     def create
       outcome = Likes::Create.run(params)
       if outcome.valid?
-        render json: { message: 'Like created!', like: outcome.result }, status: 201
+        render json: { message: 'Like created!', like: outcome.result }, status: :created
       else
-        render json: { message: 'Like don`t created!', errors: outcome.errors.details }, status: 400
+        render json: { message: 'Like don`t created!', errors: outcome.errors.details }, status: :bad_request
       end
     end
 
@@ -14,7 +14,7 @@ module Api
       if outcome.valid?
         head 204
       else
-        render json: { message: 'Like don`t deleted!', errors: outcome.errors.details }, status: 400
+        render json: { message: 'Like don`t deleted!', errors: outcome.errors.details }, status: :bad_request
       end
     end
   end

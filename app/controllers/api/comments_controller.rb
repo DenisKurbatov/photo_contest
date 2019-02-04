@@ -3,9 +3,9 @@ module Api
     def create
       outcome = Comments::Create.run(params)
       if outcome.valid?
-        render json: { message: 'Comment was created!', result: outcome.result }, status: 201
+        render json: { message: 'Comment was created!', result: outcome.result }, status: :created
       else
-        render json: { message: 'Comment don`t created!', errors: outcome.errors.details }, status: 422
+        render json: { message: 'Comment don`t created!', errors: outcome.errors.details }, status: :bad_requst
       end
     end
   end
