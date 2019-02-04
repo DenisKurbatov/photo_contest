@@ -21,11 +21,11 @@ module Api
     end
 
     def index
-      outcome = Photos::List.run(params)
+      outcome = Photos::List.run
       if outcome.valid?
         photos = outcome.result.select(:id, :name, :image, :user_id, :likes_count, :comments_count, :all_comments_count).includes(:comments)
-        photos = photos.page(params[:page])
-        render json: photos
+        photos = photos.page(params[:page]).per(params[:per])
+        render json: { photos_list: photos, page: paginate_params(photos) }
       else
         render json: outcome.errors.details
       end
