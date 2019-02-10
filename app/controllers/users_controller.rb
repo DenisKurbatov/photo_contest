@@ -3,7 +3,6 @@ class UsersController < ApplicationController
 
   def show
     @user = current_user
-    redirect_to user_path(current_user.id) if current_user.id != params[:id].to_i
   end
 
   def update
