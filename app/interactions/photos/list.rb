@@ -3,6 +3,8 @@ module Photos
     string :sorting, default: 'id asc'
     string :search, default: nil
     integer :user_id, default: nil
+    integer :page, default: nil
+    integer :per, default: nil
 
     validate :user_exists?, if: :user_id?
 
@@ -13,7 +15,7 @@ module Photos
         photos = Photo.approved.order(sorting)
         photos = photos.where("name ILIKE '%#{search}%'") unless search.nil?
       end
-      photos
+      photos.page(page).per(per)
     end
 
     private

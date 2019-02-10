@@ -14,9 +14,9 @@ class PhotosController < ApplicationController
   end
 
   def index
-    outcome = Photos::List.run(sorting: "#{sort_column} #{sort_direction}", search: params[:search])
+    outcome = Photos::List.run(sorting: "#{sort_column} #{sort_direction}", search: params[:search], page: params[:page])
     if outcome.valid?
-      @photos = outcome.result.page(params[:page])
+      @photos = outcome.result
     else
       @photos = []
     end
