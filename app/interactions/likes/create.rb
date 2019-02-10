@@ -3,8 +3,9 @@ module Likes
     integer :photo_id
     string :access_token
 
-    validate :check_user, :check_photo, :check_unique_like, :check_valid_like
-
+    validate :check_user, :check_photo
+    validate :check_unique_like, :check_valid_like, if: :photo && :user
+    
     set_callback :execute, :after, -> { @count = Photo.find_by(id: photo_id).likes_count }
 
     def execute

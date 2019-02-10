@@ -3,8 +3,6 @@ module Likes
     integer :photo_id
     string :access_token
 
-    validates :photo_id, presence: true
-    # validate :validate_like_exists?, if: -> { user }
     validate :check_user, :check_photo
 
     attr_reader :count
