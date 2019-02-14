@@ -27,11 +27,11 @@ module Photos
     end
 
     def check_user
-      errors.add(:user, 'User not found') unless user
+      raise Error::ApplicationError.new('UserError', 401, 'User is not authorized!') unless user
     end
 
     def check_photo
-      errors.add(:photo, 'Photo not found') unless photo
+      raise Error::ApplicationError.new('PhotoError', 404, 'Photo not found!') unless photo
     end
 
     def you_can_remove_photo

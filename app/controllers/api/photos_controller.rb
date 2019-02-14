@@ -7,7 +7,7 @@ module Api
       if outcome.valid?
         render json: { message: 'Photo uploaded', photo: outcome.result }, status: :created
       else
-        render json: { message: 'Photo don`t uploaded', errors: outcome.errors.details }, status: :bad_request
+        render json: outcome.errors.details, status: :bad_requst
       end
     end
 
@@ -16,7 +16,7 @@ module Api
       if outcome.valid?
         render json: { message: 'Photo was removed', photo: outcome.result }, status: :ok
       else
-        render json: { message: 'Photo not was removed', errors: outcome.errors.details }, status: :bad_request
+        render json: outcome.errors.details, status: :bad_requst
       end
     end
 
@@ -26,7 +26,7 @@ module Api
         photos = outcome.result.select(:id, :name, :image, :user_id, :likes_count, :comments_count, :all_comments_count).includes(:comments)
         render json: { photos_list: photos, page: paginate_params(photos) }, status: :ok
       else
-        render json: outcome.errors.details, status: :bad_request
+        render json: outcome.errors.details, status: :bad_requst
       end
     end
 
@@ -35,7 +35,7 @@ module Api
       if outcome.valid?
         render json: outcome.result, status: :ok
       else
-        render json: outcome.errors.details, status: :bad_request
+        render json: outcome.errors.details, status: :bad_requst
       end
     end
   end

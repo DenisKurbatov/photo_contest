@@ -1,5 +1,8 @@
 module Api
   class ApiController < ActionController::API
+    rescue_from 'Error::ApplicationError' do |e|
+      render json: { error: e.error, code: e.code, message: e.message }, status: e.code
+    end
     before_action :merge_token_to_params
 
     def merge_token_to_params

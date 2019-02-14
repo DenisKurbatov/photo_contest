@@ -6,8 +6,8 @@ module Comments
     string :access_token, default: nil
     integer :user_id, :comment_parent_id, default: nil
 
-    validates :body, presence: true, length: { in: 3..300 }
-    validate :check_user, :check_photo, :check_comment_parent
+    validates :body, length: { in: 3..300 }
+    validate :check_user, :check_photo
 
 
     def execute
@@ -47,15 +47,11 @@ module Comments
     end
 
     def check_user
-      errors.add(:user, 'User not found') unless user
+      raise Error::ApplicationError.new('UserError', 401, 'User is not authorized!') unless user
     end
 
     def check_photo
-      errors.add(:photo, 'Photo not found') unless photo
-    end
-
-    def check_comment_parent
-      errors.add(:paqrent_comment, 'Comment can`t create') unless comment_parent
+      raise Error::ApplicationError.new('PhotoError', 404, 'Photo not found!') unless photo
     end
   end
 end

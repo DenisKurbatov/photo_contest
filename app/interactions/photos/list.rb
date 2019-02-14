@@ -21,7 +21,7 @@ module Photos
     private
 
     def user_exists?
-      errors.add(:user, 'User not exists') unless User.where(id: user_id).exists?
+      raise Error::ApplicationError.new('UserError', 404, 'User not found!') unless user
     end
   end
 end
