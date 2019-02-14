@@ -28,9 +28,7 @@ ActiveAdmin.register User do
       link_to user.photos.count, admin_photos_path(q: { user_id_eq: user.id })
     end
     column :all_likes_count do |user|
-      count = 0
-      Photo.by_user(user.id).each { |x| count += x.likes_count }
-      count
+      user.photos.inject { |count, photo| count + photo.likes_count }
     end
   end
 
