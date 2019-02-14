@@ -24,7 +24,6 @@ gem 'rails', '~> 5.2.0'
 gem 'carrierwave-aws'
 gem 'dalli'
 gem 'fog-aws'
-gem 'rubocop'
 
 gem 'paper_trail'
 
