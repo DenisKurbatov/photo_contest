@@ -39,19 +39,18 @@ ActiveAdmin.register Photo do
     state_column :status
 
     actions dropdown: true, defaults: false do |photo|
-      if (photo.removed? || photo.approved?)
-        if photo.removed?
-          item I18n.t(:cancel_remove), cancel_remove_admin_photo_path(photo)
-        else
-          item I18n.t(:remove), remove_admin_photo_path(photo)
-        end
-      elsif photo.banned?
-        item I18n.t(:approve), approve_admin_photo_path(photo)
-        item I18n.t(:remove), remove_admin_photo_path(photo)
-      else
+      case photo.status
+      when 'moder'
         item I18n.t(:approve), approve_admin_photo_path(photo)
         item I18n.t(:ban), ban_admin_photo_path(photo)
         item I18n.t(:remove), remove_admin_photo_path(photo)
+      when 'banned'
+        item I18n.t(:approve), approve_admin_photo_path(photo)
+        item I18n.t(:remove), remove_admin_photo_path(photo)
+      when 'approved'
+        item I18n.t(:remove), remove_admin_photo_path(photo)
+      when 'removed'
+        item I18n.t(:cancel_remove), cancel_remove_admin_photo_path(photo)
       end
     end
   end
